@@ -5,9 +5,10 @@ import Dashboard from './pages/Dashboard';
 import AccountPage from './pages/AccountPage';
 import Settings from './pages/Settings';
 import Transactions from './pages/Transactions';
+import useStore from './store';
 
 const RootLayout = () => {
-  const user = null;
+  const user = useStore((state) => state.user);
   return !user ? <Navigate to="/signIn" /> : <Outlet />;
 };
 
