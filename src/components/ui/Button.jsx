@@ -16,7 +16,7 @@ const sizeClasses = {
 };
 
 const Button = ({
-  childern,
+  children,
   variant = 'default',
   size = 'default',
   className,
@@ -32,7 +32,7 @@ const Button = ({
       )}
       {...props}
     >
-      {childern}
+      {children}
     </button>
   );
 };

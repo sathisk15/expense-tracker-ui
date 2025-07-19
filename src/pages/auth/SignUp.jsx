@@ -4,20 +4,24 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { BiLoader } from 'react-icons/bi';
 import {
   Card,
   CardContent,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from '../../components/ui/Card';
+
 const RegisterSchema = z.object({
   email: z
     .string({ required_error: 'Email is required' })
     .email({ message: 'Invalid email address' }),
-  firstName: z.string({ required_error: 'Name is required' }),
+  firstName: z
+    .string({ required_error: 'Name is required' })
+    .min(5, 'Name must contain at least 5 character(s)'),
   password: z
     .string({ required_error: 'Password is required' })
     .min(1, 'password is required'),
@@ -75,7 +79,7 @@ const SignUp = () => {
                   name="email"
                   type="email"
                   placeholder="Enter your Email"
-                  error={errors?.firstName?.message}
+                  error={errors?.email?.message}
                   {...register('email')}
                   className="text-sm border dark:border-gray-800 dark:bg-transparent dark:placeholder:text-gray-800 dark:text=gray-400 dark:outline-none"
                 />
@@ -86,7 +90,7 @@ const SignUp = () => {
                   name="password"
                   type="password"
                   placeholder="Enter your Password"
-                  error={errors?.firstName?.message}
+                  error={errors?.password?.message}
                   {...register('password')}
                   className="text-sm border dark:border-gray-800 dark:bg-transparent dark:placeholder:text-gray-800 dark:text=gray-400 dark:outline-none"
                 />
@@ -98,7 +102,7 @@ const SignUp = () => {
                 disabled={loading}
               >
                 {loading ? (
-                  <BiLoader className="text=2xl text-white animate-spin" />
+                  <BiLoader className="text-2xl text-white animate-spin" />
                 ) : (
                   'Create an account'
                 )}
@@ -106,6 +110,15 @@ const SignUp = () => {
             </form>
           </CardContent>
         </div>
+        <CardFooter className="justify-center gap-2">
+          <p className="text-sm text-gray-600">Already have an account ?</p>
+          <Link
+            to="/singin"
+            className="text-sm font-semibold text-violet-600 hover:underline"
+          >
+            Sign In
+          </Link>
+        </CardFooter>
       </Card>
     </div>
   );
