@@ -14,6 +14,7 @@ const vitestGlobals = {
   beforeAll: 'readonly',
   afterAll: 'readonly',
   vi: 'readonly', // for mocking
+  require: 'readonly',
 };
 
 export default defineConfig([
