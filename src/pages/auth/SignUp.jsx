@@ -14,6 +14,8 @@ import {
   CardHeader,
   CardTitle,
 } from '../../components/ui/Card';
+import { toast, Toaster } from 'sonner';
+import api from '../../api/apiService';
 
 const RegisterSchema = z.object({
   email: z
@@ -40,7 +42,20 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      setLoading(true);
+      const { data: res } = await api.post('/auth/signup', data);
+
+      if (res?.user) {
+        toast.success('Account created successfully, You can now login.');
+        setTimeout(() => {
+          navigate('/signin');
+        }, 1500);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error.message);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -49,6 +64,7 @@ const SignUp = () => {
 
   return (
     <div className="flex items-center justify-center w-full min-h-screen py-10">
+      <Toaster richColors position="top-right" />
       <Card className="w-[400px] bg-white dark:bg-black/20 shadow-md overflow-hidden">
         <div className="p-6 md:p-8">
           <CardHeader className="py-0">
