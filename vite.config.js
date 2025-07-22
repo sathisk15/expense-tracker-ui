@@ -10,4 +10,14 @@ export default defineConfig({
     setupFiles: './src/setupTests.js',
     include: ['src/**/*.{test,spec}.{js,jsx,ts,tsx}'],
   },
+  coverage: {
+    reporter: ['text', 'html'], // 'text' shows in terminal, 'html' generates report
+    reportsDirectory: './coverage',
+    exclude: [
+      'node_modules/',
+      'dist/',
+      'test-utils/',
+      '**/*.spec.{js,jsx,ts,tsx}',
+    ],
+  },
 });

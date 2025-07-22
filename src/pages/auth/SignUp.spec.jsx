@@ -22,6 +22,19 @@ vi.mock('sonner', () => ({
   Toaster: () => null,
 }));
 
+// Mock NavigateFunction
+const navigateMock = vi.fn();
+
+// Mock navigate (spy on react-router)
+vi.mock('react-router-dom', async () => {
+  // Get the actual module to preserve other exports
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    useNavigate: () => navigateMock, // return a mocked function
+  };
+});
+
 describe('SignUp Page', () => {
   test('Should render sign-up form', () => {
     renderWithRouter(<SignUp />);
@@ -48,16 +61,6 @@ describe('SignUp Page', () => {
     // Mock successful response
     api.post.mockResolvedValueOnce({
       data: { user: { id: 1, email: 'test@example.com' } },
-    });
-
-    // Mock navigate (spy on react-router)
-    vi.mock('react-router-dom', async () => {
-      // Get the actual module to preserve other exports
-      const actual = await vi.importActual('react-router-dom');
-      return {
-        ...actual,
-        useNavigate: () => vi.fn(), // return a mocked function
-      };
     });
 
     renderWithRouter(<SignUp />);
@@ -87,7 +90,15 @@ describe('SignUp Page', () => {
         'Account created successfully, You can now login.'
       );
     });
+
+    await waitFor(
+      () => {
+        expect(navigateMock).toHaveBeenCalledWith('/signin');
+      },
+      { timeout: 1500 }
+    );
   });
+
   test('shows error toast on API failure', async () => {
     api.post.mockRejectedValueOnce({
       response: { data: { message: 'Email already taken' } },
