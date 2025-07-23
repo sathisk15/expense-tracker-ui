@@ -14,6 +14,8 @@ import {
   CardHeader,
   CardTitle,
 } from '../../components/ui/Card';
+import api from '../../api/apiService';
+import { toast, Toaster } from 'sonner';
 
 const LoginSchema = z.object({
   email: z
@@ -37,12 +39,20 @@ const SignIn = () => {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (data) => {
-    console.log(data);
+    try {
+      setLoading(true);
+      const response = await api.post('/auth/signin', data);
+      console.log(response.data.token);
+    } catch (error) {
+      toast.error(error?.response?.data?.message || error?.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    user && navigate('/');
-  }, [user]);
+    user && navigate('/overview');
+  }, [user, navigate]);
 
   return (
     <div className="flex items-center justify-center w-full min-h-screen py-10">

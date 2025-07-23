@@ -6,6 +6,7 @@ import AccountPage from './pages/AccountPage';
 import Settings from './pages/Settings';
 import Transactions from './pages/Transactions';
 import useStore from './store';
+import { Toaster } from 'sonner';
 
 const RootLayout = () => {
   const user = useStore((state) => state.user);
@@ -21,6 +22,7 @@ const RootLayout = () => {
 function App() {
   return (
     <main>
+      <Toaster richColors position="top-right" />
       <div className="w-full min-h-screen px-6 bg-gray-100 md:px-20 dark:bg-slate-900">
         <Routes>
           <Route element={<RootLayout />}>
