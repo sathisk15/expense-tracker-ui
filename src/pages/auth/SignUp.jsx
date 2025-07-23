@@ -1,11 +1,10 @@
 import * as z from 'zod';
-import useStore from '../../store';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BiLoader } from 'react-icons/bi';
 import {
   Card,
@@ -14,8 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from '../../components/ui/Card';
-import { toast, Toaster } from 'sonner';
-import api from '../../api/apiService';
+import { toast } from 'sonner';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser, resetRegisterUser } from '../../features/auth/authSlice';
 
 const RegisterSchema = z.object({
   email: z
@@ -30,7 +30,8 @@ const RegisterSchema = z.object({
 });
 
 const SignUp = () => {
-  const { user } = useStore((state) => state);
+  const { isLoading, isSuccess, message } = useSelector((state) => state.auth);
+
   const {
     register,
     handleSubmit,
@@ -38,29 +39,20 @@ const SignUp = () => {
   } = useForm({ resolver: zodResolver(RegisterSchema) });
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [loading, setLoading] = useState(false);
-
-  const onSubmit = async (data) => {
-    try {
-      setLoading(true);
-      const { data: res } = await api.post('/auth/signup', data);
-
-      if (res?.user) {
-        toast.success('Account created successfully, You can now login.');
-        setTimeout(() => {
-          navigate('/signin');
-        }, 1500);
-      }
-    } catch (error) {
-      toast.error(error?.response?.data?.message || error.message);
-      setLoading(false);
-    }
-  };
+  const onSubmit = async (userFormDetails) =>
+    dispatch(registerUser(userFormDetails));
 
   useEffect(() => {
-    user && navigate('/');
-  }, [user, navigate]);
+    if (isSuccess) {
+      toast.success(message);
+      setTimeout(() => navigate('/signin', 1000));
+    } else if (!isSuccess && message) {
+      toast.error(message);
+    }
+    message && dispatch(resetRegisterUser());
+  }, [isSuccess, message, navigate, dispatch]);
 
   return (
     <div className="flex items-center justify-center w-full min-h-screen py-10">
@@ -74,9 +66,9 @@ const SignUp = () => {
           <CardContent className="p-0">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="mb-8 space-y-6">
-                {/* <SocialAuth isLoading={loading} setLoading={setLoading} /> */}
+                {/* <SocialAuth isisLoading={isLoading} setisLoading={setisLoading} /> */}
                 <Input
-                  disabled={loading}
+                  disabled={isLoading}
                   id="firstname"
                   label="Name"
                   name="firstName"
@@ -88,7 +80,7 @@ const SignUp = () => {
                   className="text-sm border dark:border-gray-800 dark:bg-transparent dark:placeholder:text-gray-800 dark:text=gray-400 dark:outline-none"
                 />
                 <Input
-                  disabled={loading}
+                  disabled={isLoading}
                   id="email"
                   label="Email"
                   name="email"
@@ -99,7 +91,7 @@ const SignUp = () => {
                   className="text-sm border dark:border-gray-800 dark:bg-transparent dark:placeholder:text-gray-800 dark:text=gray-400 dark:outline-none"
                 />
                 <Input
-                  disabled={loading}
+                  disabled={isLoading}
                   id="password"
                   label="Password"
                   name="password"
@@ -114,9 +106,9 @@ const SignUp = () => {
               <Button
                 type="submit"
                 className="w-full bg-violet-800"
-                disabled={loading}
+                disabled={isLoading}
               >
-                {loading ? (
+                {isLoading ? (
                   <BiLoader className="text-2xl text-white animate-spin" />
                 ) : (
                   'Create an account'
