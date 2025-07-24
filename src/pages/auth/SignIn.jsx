@@ -1,11 +1,10 @@
 import * as z from 'zod';
-import useStore from '../../store';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { BiLoader } from 'react-icons/bi';
 import {
   Card,
@@ -14,8 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from '../../components/ui/Card';
-import api from '../../api/apiService';
-import { toast, Toaster } from 'sonner';
+import { useDispatch, useSelector } from 'react-redux';
+import { signInUser } from '../../features/authSlice';
 
 const LoginSchema = z.object({
   email: z
@@ -27,7 +26,12 @@ const LoginSchema = z.object({
 });
 
 const SignIn = () => {
-  const { user } = useStore((state) => state);
+  const { isLoading, isSuccess, user, token } = useSelector(
+    (state) => state.auth
+  );
+
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -36,23 +40,12 @@ const SignIn = () => {
 
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
-
-  const onSubmit = async (data) => {
-    try {
-      setLoading(true);
-      const response = await api.post('/auth/signin', data);
-      console.log(response.data.token);
-    } catch (error) {
-      toast.error(error?.response?.data?.message || error?.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const onSubmit = async (userCredentials) =>
+    dispatch(signInUser(userCredentials));
 
   useEffect(() => {
-    user && navigate('/overview');
-  }, [user, navigate]);
+    if (isSuccess && user && token) navigate('/overview');
+  }, [isSuccess, user, token, navigate]);
 
   return (
     <div className="flex items-center justify-center w-full min-h-screen py-10">
@@ -68,7 +61,7 @@ const SignIn = () => {
               <div className="mb-8 space-y-6">
                 {/* <SocialAuth isLoading={loading} setLoading={setLoading} /> */}
                 <Input
-                  disabled={loading}
+                  disabled={isLoading}
                   id="email"
                   label="Email"
                   name="email"
@@ -79,7 +72,7 @@ const SignIn = () => {
                   className="text-sm border dark:border-gray-800 dark:bg-transparent dark:placeholder:text-gray-800 dark:text=gray-400 dark:outline-none"
                 />
                 <Input
-                  disabled={loading}
+                  disabled={isLoading}
                   id="password"
                   label="Password"
                   name="password"
@@ -94,9 +87,9 @@ const SignIn = () => {
               <Button
                 type="submit"
                 className="w-full bg-violet-800"
-                disabled={loading}
+                disabled={isLoading}
               >
-                {loading ? (
+                {isLoading ? (
                   <BiLoader className="text-2xl text-white animate-spin" />
                 ) : (
                   'Sign In'

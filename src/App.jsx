@@ -5,12 +5,12 @@ import Dashboard from './pages/Dashboard';
 import AccountPage from './pages/AccountPage';
 import Settings from './pages/Settings';
 import Transactions from './pages/Transactions';
-import useStore from './store';
-import { Toaster } from 'sonner';
+import { useSelector } from 'react-redux';
+import Notification from './components/ui/Notification';
 
 const RootLayout = () => {
-  const user = useStore((state) => state.user);
-  return !user ? (
+  const { token } = useSelector((state) => state.auth);
+  return !token ? (
     <Navigate to="/signIn" />
   ) : (
     <div className="min-h-[cal(h-screen-100px)]">
@@ -22,8 +22,8 @@ const RootLayout = () => {
 function App() {
   return (
     <main>
-      <Toaster richColors position="top-right" />
       <div className="w-full min-h-screen px-6 bg-gray-100 md:px-20 dark:bg-slate-900">
+        <Notification />
         <Routes>
           <Route element={<RootLayout />}>
             <Route element={<Navigate to={'/overview'} />} />

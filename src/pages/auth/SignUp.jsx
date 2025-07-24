@@ -13,9 +13,8 @@ import {
   CardHeader,
   CardTitle,
 } from '../../components/ui/Card';
-import { toast } from 'sonner';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser, resetRegisterUser } from '../../features/auth/authSlice';
+import { registerUser } from '../../features/authSlice';
 
 const RegisterSchema = z.object({
   email: z
@@ -30,7 +29,7 @@ const RegisterSchema = z.object({
 });
 
 const SignUp = () => {
-  const { isLoading, isSuccess, message } = useSelector((state) => state.auth);
+  const { isLoading, isSuccess } = useSelector((state) => state.auth);
 
   const {
     register,
@@ -46,13 +45,9 @@ const SignUp = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(message);
       setTimeout(() => navigate('/signin'), 500);
-    } else if (!isSuccess && message) {
-      toast.error(message);
     }
-    message && dispatch(resetRegisterUser());
-  }, [isSuccess, message, navigate, dispatch]);
+  }, [isSuccess, navigate]);
 
   return (
     <div className="flex items-center justify-center w-full min-h-screen py-10">
