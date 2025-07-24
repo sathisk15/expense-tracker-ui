@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from '../../components/ui/Card';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser } from '../../features/authSlice';
+import { registerUser, resetAuth } from '../../features/authSlice';
 
 const RegisterSchema = z.object({
   email: z
@@ -47,7 +47,8 @@ const SignUp = () => {
     if (isSuccess) {
       setTimeout(() => navigate('/signin'), 500);
     }
-  }, [isSuccess, navigate]);
+    return () => dispatch(resetAuth());
+  }, [isSuccess, navigate, dispatch]);
 
   return (
     <div className="flex items-center justify-center w-full min-h-screen py-10">
