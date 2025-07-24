@@ -47,7 +47,7 @@ const SignUp = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(message);
-      setTimeout(() => navigate('/signin', 1000));
+      setTimeout(() => navigate('/signin'), 500);
     } else if (!isSuccess && message) {
       toast.error(message);
     }
@@ -72,7 +72,7 @@ const SignUp = () => {
                   id="firstname"
                   label="Name"
                   name="firstName"
-                  register={register}
+                  {...register('firstName')}
                   type="text"
                   placeholder="Enter your Name"
                   error={errors?.firstName?.message}

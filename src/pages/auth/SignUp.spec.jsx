@@ -1,10 +1,32 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SignUp from './SignUp';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter as Router } from 'react-router-dom';
 import api from '../../api/apiService';
 import { toast } from 'sonner';
+import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
+import { thunk } from 'redux-thunk';
 
-const renderWithRouter = (ui) => render(<MemoryRouter>{ui}</MemoryRouter>);
+const mockStore = configureStore([thunk]);
+
+const initialState = {
+  isLoading: false,
+  isSuccess: null,
+  message: null,
+};
+
+const renderWithRouter = (
+  ui,
+  store = mockStore({
+    auth: initialState,
+  })
+) => {
+  return render(
+    <Provider store={store}>
+      <Router>{ui}</Router>
+    </Provider>
+  );
+};
 
 // Mock the api.post method
 vi.mock('../../api/apiService', () => ({
@@ -63,7 +85,15 @@ describe('SignUp Page', () => {
       data: { user: { id: 1, email: 'test@example.com' } },
     });
 
-    renderWithRouter(<SignUp />);
+    const store = mockStore({
+      auth: {
+        isLoading: false,
+        isSuccess: true,
+        message: 'Account created successfully.',
+      },
+    });
+
+    renderWithRouter(<SignUp />, store);
 
     fireEvent.change(screen.getByLabelText(/name/i), {
       target: { value: 'Test User' },
@@ -87,7 +117,7 @@ describe('SignUp Page', () => {
     // Wait for toast success
     await waitFor(() => {
       expect(toast.success).toHaveBeenCalledWith(
-        'Account created successfully, You can now login.'
+        'Account created successfully.'
       );
     });
 
@@ -95,7 +125,7 @@ describe('SignUp Page', () => {
       () => {
         expect(navigateMock).toHaveBeenCalledWith('/signin');
       },
-      { timeout: 1500 }
+      { timeout: 500 }
     );
   });
 
@@ -104,7 +134,15 @@ describe('SignUp Page', () => {
       response: { data: { message: 'Email already taken' } },
     });
 
-    renderWithRouter(<SignUp />);
+    const store = mockStore({
+      auth: {
+        isLoading: false,
+        isSuccess: false,
+        message: 'Email already taken',
+      },
+    });
+
+    renderWithRouter(<SignUp />, store);
 
     fireEvent.change(screen.getByLabelText(/name/i), {
       target: { value: 'Test User' },

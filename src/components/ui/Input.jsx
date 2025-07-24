@@ -23,7 +23,7 @@ const Input = forwardRef(
           id={id}
           ref={ref}
           className={clsx(
-            'block w-full rounded-md border-gray-300 shadow-sm',
+            'block w-full rounded-md border-gray-300 shadow-sm outline-none',
             'focus:border-indigo-300 focus:ring focus:ring-blue-400 focus:ring-opacity-50',
             'placeholder-gray-400',
             'disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed',
