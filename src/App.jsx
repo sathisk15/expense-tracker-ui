@@ -20,8 +20,10 @@ const RootLayout = () => {
 };
 
 function App() {
+  const theme = 'light';
+
   return (
-    <main>
+    <main className={theme}>
       <div className="w-full min-h-screen px-6 bg-gray-100 md:px-20 dark:bg-slate-900">
         <Notification />
         <Routes>
