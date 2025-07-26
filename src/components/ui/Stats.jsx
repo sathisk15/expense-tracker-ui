@@ -31,7 +31,7 @@ const ICON_STYLES = [
 
 const Stats = () => {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-between gap-8 2xl:gap-40 mb-20">
+    <div className="flex flex-col md:flex-row items-center justify-between gap-8 2xl:gap-30 mb-20">
       {data.map((item, idx) => (
         <div
           className="w-full 2xl:min-w-96 flex items-center justify-between gap-5 px-4 md:px-8 py-12 rounded-lg bg-gray-50 dark:bg-slate-800 border border-gray-100 dark:border-slate-900"
@@ -61,7 +61,9 @@ const Stats = () => {
               {item.increase > 0 ? <IoMdArrowUp /> : <IoMdArrowDown />}
               {Math.abs(item.increase)} %
             </p>
-            <span>Compare to last year</span>
+            <span className="text-xs md:text-sm text-gray-600 dark:text-gray-500">
+              Compare to last year
+            </span>
           </div>
         </div>
       ))}
