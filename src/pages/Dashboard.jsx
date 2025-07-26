@@ -12,7 +12,10 @@ const Dashboard = () => {
     <div className="">
       <Navbar />
       <div className="px-0 md:px-5 2xl:px-20">
-        <Info />
+        <Info
+          title={'Dashboard'}
+          subTitle={'Monitor your financial activities'}
+        />
         <Stats />
         <div className="w-full flex flex-col-reverse md:flex-row items-center gap-10">
           <Chart />

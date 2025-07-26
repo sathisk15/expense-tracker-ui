@@ -20,7 +20,7 @@ const RootLayout = () => {
 };
 
 function App() {
-  const theme = 'dark';
+  const theme = 'light';
 
   return (
     <main className={theme}>
