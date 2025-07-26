@@ -7,7 +7,7 @@ const Info = ({ title, subTitle }) => {
         <h1 className="text-4xl font-semibold text-black dark:text-gray-300 mb-2">
           {title}
         </h1>
-        <span className="text-gray-600 text-gray-500">{subTitle}</span>
+        <span className="text-gray-600 dark:text-gray-500">{subTitle}</span>
       </div>
 
       <div className="flex items-center gap-4 md:gap-10 2xl:gap-20">
