@@ -8,6 +8,8 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await api.post('/auth/signup', userDetails);
       dispatch(notifySuccess(response.data.message));
+      // localStorage.setItem('token', JSON.stringify(response.data.token));
+      // localStorage.setItem('user', JSON.stringify(response.data.user));
       return response.data;
     } catch (error) {
       const errorMessage = error?.response?.data?.message || error.message;
