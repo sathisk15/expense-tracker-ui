@@ -5,19 +5,8 @@ import Dashboard from './pages/Dashboard';
 import AccountPage from './pages/AccountPage';
 import Settings from './pages/Settings';
 import Transactions from './pages/Transactions';
-import { useSelector } from 'react-redux';
 import Notification from './components/ui/Notification';
-
-const RootLayout = () => {
-  const { token } = useSelector((state) => state.auth);
-  return !token ? (
-    <Navigate to="/signIn" />
-  ) : (
-    <div className="min-h-[cal(h-screen-100px)]">
-      <Outlet />
-    </div>
-  );
-};
+import ProtectedRoutes from './utils/ProtectedRoutes';
 
 function App() {
   const theme = 'light';
@@ -27,7 +16,7 @@ function App() {
       <div className="w-full min-h-screen px-6 bg-gray-100 md:px-20 dark:bg-slate-900">
         <Notification />
         <Routes>
-          <Route element={<RootLayout />}>
+          <Route element={<ProtectedRoutes />}>
             <Route element={<Navigate to={'/overview'} />} />
             <Route path="/overview" element={<Dashboard />} />
             <Route path="/account" element={<AccountPage />} />

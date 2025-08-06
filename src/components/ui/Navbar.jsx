@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { RiCurrencyLine } from 'react-icons/ri';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
-import avatar from '../../../public/avatar.png';
+import avatar from '../../images/avatar.png';
 import ThemeSwitch from './ThemeSwitch';
 const links = ['Dashboard', 'Transactions', 'Accounts', 'Settings'];
 

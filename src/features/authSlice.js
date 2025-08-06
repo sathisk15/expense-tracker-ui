@@ -8,8 +8,6 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await api.post('/auth/signup', userDetails);
       dispatch(notifySuccess(response.data.message));
-      // localStorage.setItem('token', JSON.stringify(response.data.token));
-      // localStorage.setItem('user', JSON.stringify(response.data.user));
       return response.data;
     } catch (error) {
       const errorMessage = error?.response?.data?.message || error.message;
@@ -24,6 +22,8 @@ export const signInUser = createAsyncThunk(
   async (userCredentials, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.post('/auth/signin', userCredentials);
+      localStorage.setItem('token', JSON.stringify(response.data.token));
+      localStorage.setItem('user', JSON.stringify(response.data.user));
       dispatch(notifySuccess(response.data.message));
       return response.data;
     } catch (error) {
