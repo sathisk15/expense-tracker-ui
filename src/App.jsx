@@ -1,4 +1,4 @@
-import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
 import Dashboard from './pages/Dashboard';
@@ -7,10 +7,11 @@ import Settings from './pages/Settings';
 import Transactions from './pages/Transactions';
 import Notification from './components/ui/Notification';
 import ProtectedRoutes from './utils/ProtectedRoutes';
+import useSyncUserFromLocalStorage from './hooks/useSyncUserFromLocalStorage';
 
 function App() {
   const theme = 'light';
-
+  useSyncUserFromLocalStorage();
   return (
     <main className={theme}>
       <div className="w-full min-h-screen px-6 bg-gray-100 md:px-20 dark:bg-slate-900">
