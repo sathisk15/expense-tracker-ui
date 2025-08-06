@@ -3,10 +3,13 @@ import { RiCurrencyLine } from 'react-icons/ri';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import avatar from '../../images/avatar.png';
 import ThemeSwitch from './ThemeSwitch';
+import { useSelector } from 'react-redux';
 const links = ['Dashboard', 'Transactions', 'Accounts', 'Settings'];
 
 const Navbar = () => {
   const [selected, setSelected] = useState(0);
+  const user = useSelector((state) => state.auth.user);
+
   return (
     <div className="w-full flex items-center justify-between py-6">
       <div className="flex items-center gap-2 cursor-pointer">
@@ -43,10 +46,10 @@ const Navbar = () => {
         />
         <div className="hidden md:block">
           <p className="text-lg font-medium text-black dark:text-gray-400">
-            John Doe
+            {user?.firstname}
           </p>
           <span className="text-sm tex-gray-700 dark:text-gray-500">
-            jon@gmail.com
+            {user?.email}
           </span>
         </div>
         <MdOutlineKeyboardArrowDown className="hidden md:block text-2xl text-gray-600 dark:text-gray-300 cursor-pointer" />
