@@ -15,7 +15,7 @@ const Settings = () => {
           </p>
           <div className="flex items-center gap-4 my-8">
             <div className="flex font-bold text-2xl items-center justify-center w-12 h-12 text-white rounded full cursor-pointer bg-violet-600">
-              <p>{user?.username?.charAt(0)}</p>
+              <p>{user?.firstname?.charAt(0)}</p>
             </div>
             <p className="text2xl font-semibold text-black dark:text-white">
               {user?.firstname}
