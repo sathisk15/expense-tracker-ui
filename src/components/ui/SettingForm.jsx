@@ -7,8 +7,11 @@ import {
   ComboboxInput,
   ComboboxOption,
   ComboboxOptions,
+  Transition,
 } from '@headlessui/react';
 import { BsChevronExpand } from 'react-icons/bs';
+import Input from './Input';
+import Button from './Button';
 const SettingForm = () => {
   const { user } = useSelector((state) => state.auth);
   const {
@@ -105,7 +108,124 @@ const SettingForm = () => {
       </Combobox>
     </div>
   );
-  return <div>SettingForm</div>;
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="w-full">
+          <Input
+            className="inputStyle"
+            name="firstname"
+            id="firstname"
+            label="First Name"
+            type="text"
+            register={register('firstname', {
+              required: 'First Name is required!',
+            })}
+            error={errors.firstname ? errors.firstname.message : ''}
+          />
+        </div>
+        <div className="w-full">
+          <Input
+            className="inputStyle"
+            name="lastname"
+            id="lastname"
+            type="text"
+            label="Last Name"
+            register={register('lastname', {
+              required: 'Last Name is required!',
+            })}
+            error={errors.lastname ? errors.lastname.message : ''}
+          />
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="w-full">
+          <Input
+            className="inputStyle"
+            name="email"
+            id="email"
+            type="text"
+            label="Email"
+            register={register('email', {
+              required: 'Email is required!',
+            })}
+            error={errors.email ? errors.email.message : ''}
+          />
+        </div>
+        <div className="w-full">
+          <Input
+            className="inputStyle"
+            name="contact"
+            id="contact"
+            label="Contact"
+            register={register('contact', {
+              required: 'Contact is required!',
+            })}
+            error={errors.contact ? errors.contact.message : ''}
+          />
+        </div>
+      </div>
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="w-full">
+          <span className="labelStyle">Country</span>
+          <Country />
+        </div>
+        <div className="w-full">
+          <span className="labelStyle">Currency</span>
+          <select className="inputStyles">
+            <option>{selectedCountry?.currency || user?.country}</option>
+          </select>
+        </div>
+      </div>
+      <div className="w-full flex items-center justify-between pt-10">
+        <div>
+          <p className="text-lg text-black dark:text-gray-400 font-semibold">
+            Appearance
+          </p>
+          <span className="labelStyles">
+            Customize how your theme looks on your device.
+          </span>
+        </div>
+        <div className="w-28 md:w-40">
+          <select
+            className="inputStyles" //defaultValue={theme}
+          >
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </div>
+      </div>
+      <div className="w-full flex items-center justify-between pt-10">
+        <div>
+          <p className="text-lg text-black dark:text-gray-400 font-semibold">
+            Language
+          </p>
+          <span className="labelStyles">
+            Customize what language you want to use.
+          </span>
+        </div>
+        <div className="w-28 md:w-40">
+          <select
+            className="inputStyles" //defaultValue={theme}
+          >
+            <option value="english">English</option>
+          </select>
+        </div>
+      </div>
+      <div className="flex items-center gap-6 justify-end pb-10 border-gray-200 dark:border-gray-800">
+        <Button
+          className="px-6 bg-transparent text-black dark:text-white border border-gray-200 dark:border-gray-700"
+          type="reset"
+          variant="outline"
+        >
+          Reset
+        </Button>
+        <Button type="submit" className="px-8 bg-violet-800 text-white">
+          Save
+        </Button>
+      </div>
+    </form>
+  );
 };
 
 export default SettingForm;
