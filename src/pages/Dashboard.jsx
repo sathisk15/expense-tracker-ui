@@ -1,5 +1,3 @@
-import React from 'react';
-import Navbar from '../components/ui/Navbar';
 import Info from '../components/ui/Info';
 import Stats from '../components/ui/Stats';
 import Chart from '../components/ui/Chart';
@@ -10,7 +8,6 @@ import Accounts from '../components/ui/Accounts';
 const Dashboard = () => {
   return (
     <div className="">
-      <Navbar />
       <div className="px-0 md:px-5 2xl:px-20">
         <Info
           title={'Dashboard'}

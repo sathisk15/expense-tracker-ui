@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
 import { RiCurrencyLine } from 'react-icons/ri';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import avatar from '../../images/avatar.png';
 import ThemeSwitch from './ThemeSwitch';
 import { useSelector } from 'react-redux';
-const links = ['Dashboard', 'Transactions', 'Accounts', 'Settings'];
+import { NavLink } from 'react-router-dom';
+const menu = ['Dashboard', 'Transactions', 'Accounts', 'Settings'];
 
 const Navbar = () => {
-  const [selected, setSelected] = useState(0);
   const user = useSelector((state) => state.auth.user);
 
   return (
@@ -21,18 +20,20 @@ const Navbar = () => {
         </span>
       </div>
       <div className="hidden md:flex items-center gap-4">
-        {links.map((link, idx) => (
-          <div
+        {menu.map((link, idx) => (
+          <NavLink
+            to={`/${link.toLowerCase()}`}
             key={idx}
-            className={`${
-              idx === selected
-                ? 'bg-black dark:bg-slate-800 text-white'
-                : 'text-gray-700 dark:text-gray-500'
-            } px-6 py-2 rounded-full`}
-            onClick={() => setSelected(idx)}
+            className={({ isActive }) =>
+              `${
+                isActive
+                  ? 'bg-black dark:bg-slate-800 text-white'
+                  : 'text-gray-700 dark:text-gray-500'
+              } px-6 py-2 rounded-full`
+            }
           >
-            <a href="#">{link}</a>
-          </div>
+            {link}
+          </NavLink>
         ))}
       </div>
       <div className="flex items-center gap-10 2xl:gap-20">
