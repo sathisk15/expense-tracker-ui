@@ -18,7 +18,7 @@ function App() {
         <Notification />
         <Routes>
           <Route element={<ProtectedRoutes />}>
-            <Route element={<Navigate to={'/dashboard'} />} />
+            <Route path="/" element={<Navigate to={'/dashboard'} />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/accounts" element={<AccountPage />} />
             <Route path="/settings" element={<Settings />} />

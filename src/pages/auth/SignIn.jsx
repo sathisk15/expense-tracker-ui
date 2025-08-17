@@ -44,8 +44,7 @@ const SignIn = () => {
     dispatch(signInUser(userCredentials));
 
   useEffect(() => {
-    // if (localStorage.getItem('token')) navigate('/overview');
-    if (isSuccess && user && token) navigate('/overview');
+    if (isSuccess && user && token) navigate('/dashboard');
   }, [isSuccess, user, token, navigate]);
 
   return (
