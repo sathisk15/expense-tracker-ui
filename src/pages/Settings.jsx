@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import Title from '../components/ui/Title';
 import SettingForm from '../components/ui/SettingForm';
+import ChangePassword from '../components/ui/ChangePassword';
 const Settings = () => {
   const { user } = useSelector((state) => state.auth);
   return (
@@ -22,7 +23,7 @@ const Settings = () => {
             </p>
           </div>
           <SettingForm />
-          {/* {!user?.provided && <ChangePassword />} */}
+          {!user?.provided && <ChangePassword />}
         </div>
       </div>
     </div>
