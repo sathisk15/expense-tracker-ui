@@ -1,9 +1,18 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Title from '../components/ui/Title';
 import SettingForm from '../components/ui/SettingForm';
 import ChangePassword from '../components/ui/ChangePassword';
+import { useEffect } from 'react';
+import { getUser } from '../features/authSlice';
 const Settings = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { isLoading, user } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
+
   return (
     <div className="flex flex-col items-center w-full">
       <div className="w-full max-w-4xl p-4 my-6 shadow-lg bg-gray-50 dark:bg-black/20 md:px-10 md:my-10">

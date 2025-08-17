@@ -15,7 +15,7 @@ import Button from './Button';
 import { getCountries } from '../../features/countrySlice';
 import { BiCheck } from 'react-icons/bi';
 const SettingForm = () => {
-  const { user } = useSelector((state) => state.auth);
+  const { isLoading, user } = useSelector((state) => state.auth);
   const { data: countriesData } = useSelector((state) => state.countries);
   const {
     register,
@@ -31,7 +31,9 @@ const SettingForm = () => {
 
   const [query, setQuery] = useState('');
 
-  const onSubmit = () => {};
+  const onSubmit = () => {
+    // dispatch user update action
+  };
 
   const filteredCountries = useMemo(() => {
     return query === ''
@@ -133,6 +135,7 @@ const SettingForm = () => {
             id="firstname"
             label="First Name"
             type="text"
+            disabled={isLoading}
             register={register('firstname', {
               required: 'First Name is required!',
             })}
@@ -146,6 +149,7 @@ const SettingForm = () => {
             name="lastname"
             id="lastname"
             type="text"
+            disabled={isLoading}
             label="Last Name"
             register={register('lastname', {
               required: 'Last Name is required!',
@@ -161,6 +165,7 @@ const SettingForm = () => {
             className="inputStyle"
             name="email"
             id="email"
+            disabled={isLoading}
             type="text"
             label="Email"
             register={register('email', {
@@ -176,6 +181,7 @@ const SettingForm = () => {
             name="contact"
             id="contact"
             label="Contact"
+            disabled={isLoading}
             register={register('contact', {
               required: 'Contact is required!',
             })}
@@ -208,6 +214,7 @@ const SettingForm = () => {
         <div className="w-28 md:w-40">
           <select
             className="inputStyles" //defaultValue={theme}
+            disabled={isLoading}
           >
             <option value="light">Light</option>
             <option value="dark">Dark</option>
@@ -226,6 +233,7 @@ const SettingForm = () => {
         <div className="w-28 md:w-40">
           <select
             className="inputStyles" //defaultValue={theme}
+            disabled={isLoading}
           >
             <option value="english">English</option>
           </select>
@@ -240,7 +248,11 @@ const SettingForm = () => {
           Reset
         </Button>
         <Button type="submit" className="px-8 bg-violet-800 text-white">
-          Save
+          {isLoading ? (
+            <BiLoader className="text-2xl text-white animate-spin" />
+          ) : (
+            'Save'
+          )}
         </Button>
       </div>
     </form>

@@ -1,6 +1,9 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api from '../api/apiService';
+import api, { setAuthToken } from '../api/apiService';
 import { notifyFailure, notifySuccess } from './notificationSlice';
+
+const token = JSON.parse(localStorage.getItem('token'));
+setAuthToken(token);
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
@@ -25,6 +28,21 @@ export const signInUser = createAsyncThunk(
       localStorage.setItem('token', JSON.stringify(response.data.token));
       localStorage.setItem('user', JSON.stringify(response.data.user));
       dispatch(notifySuccess(response.data.message));
+      return response.data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error.message;
+      dispatch(notifyFailure(errorMessage));
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const getUser = createAsyncThunk(
+  'auth/getUser',
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.get('/user');
+      localStorage.setItem('user', JSON.stringify(response.data.user));
       return response.data;
     } catch (error) {
       const errorMessage = error?.response?.data?.message || error.message;
@@ -82,6 +100,19 @@ const authSlice = createSlice({
         state.token = payload.token;
       })
       .addCase(signInUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.message = payload;
+      })
+      .addCase(getUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = payload.user;
+      })
+      .addCase(getUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.message = payload;
