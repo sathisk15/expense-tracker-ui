@@ -10,7 +10,7 @@ import SelectInput from './SelectInput';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 const SettingForm = () => {
-  const { isLoading, user } = useSelector((state) => state.auth);
+  const { isLoading, user } = useSelector((state) => state.user);
   const { data: countriesData } = useSelector((state) => state.countries);
 
   const ProfileSchema = z.object({

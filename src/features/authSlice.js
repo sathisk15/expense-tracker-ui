@@ -34,26 +34,10 @@ export const signInUser = createAsyncThunk(
   }
 );
 
-export const getUser = createAsyncThunk(
-  'auth/getUser',
-  async (_, { dispatch, rejectWithValue }) => {
-    try {
-      const response = await api.get('/user');
-      localStorage.setItem('user', JSON.stringify(response.data.user));
-      return response.data;
-    } catch (error) {
-      const errorMessage = error?.response?.data?.message || error.message;
-      dispatch(notifyFailure(errorMessage));
-      return rejectWithValue(errorMessage);
-    }
-  }
-);
-
 const initialState = {
   isLoading: false,
   isSuccess: null,
   message: null,
-  user: null,
   token: null,
   isAuthChecked: false,
 };
@@ -67,7 +51,6 @@ const authSlice = createSlice({
       state.isLoading = false;
       state.isSuccess = null;
       state.message = null;
-      state.user = action.payload.user;
       state.token = action.payload.token;
     },
   },
@@ -93,23 +76,9 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.message = payload.message;
-        state.user = payload.user;
         state.token = payload.token;
       })
       .addCase(signInUser.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.isSuccess = false;
-        state.message = payload;
-      })
-      .addCase(getUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getUser.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.user = payload.user;
-      })
-      .addCase(getUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.message = payload;
