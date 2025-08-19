@@ -15,11 +15,11 @@ export const getCountries = createAsyncThunk(
     try {
       const { data } = await axios.get(COUNTRIES_URI);
       const modifiedCountryData = data.map((country) => ({
-        country: country?.name?.common || '',
+        name: country?.name?.common || '',
         currency: Object.keys(country.currencies)[0] || '',
         flag: country.flags.png,
       }));
-      modifiedCountryData.sort((a, b) => a.country.localeCompare(b.country));
+      modifiedCountryData.sort((a, b) => a.name.localeCompare(b.name));
       return modifiedCountryData;
     } catch (error) {
       const errorMessage = error?.response?.data?.message || error.message;
