@@ -7,14 +7,43 @@ import { getCountries } from '../../features/countrySlice';
 import { BiLoader } from 'react-icons/bi';
 
 import SelectInput from './SelectInput';
+import z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 const SettingForm = () => {
   const { isLoading, user } = useSelector((state) => state.auth);
   const { data: countriesData } = useSelector((state) => state.countries);
+
+  const ProfileSchema = z.object({
+    firstname: z
+      .string({ required_error: 'First Name is required!' })
+      .min(3, 'First Name must contain at least 3 character(s)'),
+    lastname: z
+      .string({ required_error: 'Last Name is required!' })
+      .min(3, 'Last Name must contain at least 3 character(s)'),
+    email: z
+      .string({ required_error: 'Email is required' })
+      .email({ message: 'Invalid email address' }),
+    contact: z
+      .string({ required_error: 'Contact is required' })
+      .min(6, 'Contact must be at least 6 digits long'),
+  });
+
+  const normalizeUserValues = (user) => ({
+    firstname: user?.firstname ?? '',
+    lastname: user?.lastname ?? '',
+    email: user?.email ?? '',
+    contact: user?.contact ?? '',
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({ defaultValue: { ...user } });
+  } = useForm({
+    defaultValues: normalizeUserValues(user),
+    values: normalizeUserValues(user),
+    resolver: zodResolver(ProfileSchema),
+  });
   const [selectedCountry, setSelectedCountry] = useState({
     country: user?.country,
     currency: user?.currency,
@@ -22,8 +51,15 @@ const SettingForm = () => {
 
   const dispatch = useDispatch();
 
-  const onSubmit = () => {
+  const onSubmit = (data) => {
     // dispatch user update action
+    const formData = {
+      ...data,
+      country: selectedCountry.name || user?.country,
+      currency: selectedCountry.currency || user?.currency,
+    };
+
+    console.log(formData);
   };
 
   useEffect(() => {
@@ -41,10 +77,7 @@ const SettingForm = () => {
             label="First Name"
             type="text"
             disabled={isLoading}
-            register={register('firstname', {
-              required: 'First Name is required!',
-            })}
-            defaultValue={user?.firstname}
+            {...register('firstname')}
             error={errors.firstname ? errors.firstname.message : ''}
           />
         </div>
@@ -56,10 +89,7 @@ const SettingForm = () => {
             type="text"
             disabled={isLoading}
             label="Last Name"
-            register={register('lastname', {
-              required: 'Last Name is required!',
-            })}
-            defaultValue={user?.lastname}
+            {...register('lastname')}
             error={errors.lastname ? errors.lastname.message : ''}
           />
         </div>
@@ -73,10 +103,7 @@ const SettingForm = () => {
             disabled={isLoading}
             type="text"
             label="Email"
-            register={register('email', {
-              required: 'Email is required!',
-            })}
-            defaultValue={user?.email}
+            {...register('email')}
             error={errors.email ? errors.email.message : ''}
           />
         </div>
@@ -87,10 +114,7 @@ const SettingForm = () => {
             id="contact"
             label="Contact"
             disabled={isLoading}
-            register={register('contact', {
-              required: 'Contact is required!',
-            })}
-            defaultValue={user?.contact}
+            {...register('contact')}
             error={errors.contact ? errors.contact.message : ''}
           />
         </div>
@@ -98,12 +122,11 @@ const SettingForm = () => {
       <div className="flex flex-col md:flex-row items-center justify-between gap-4">
         <div className="w-full">
           <span className="labelStyle">Country</span>
-          {/* <Country /> */}
-          {/* <Example /> */}
           <SelectInput
             data={countriesData}
             selected={selectedCountry}
             setSelected={setSelectedCountry}
+            register={register}
           />
         </div>
         <div className="w-full">
