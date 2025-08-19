@@ -1,9 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import api, { setAuthToken } from '../api/apiService';
+import api from '../api/apiService';
 import { notifyFailure, notifySuccess } from './notificationSlice';
-
-const token = JSON.parse(localStorage.getItem('token'));
-setAuthToken(token);
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',

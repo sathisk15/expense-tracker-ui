@@ -13,7 +13,7 @@ import { BsChevronExpand } from 'react-icons/bs';
 import Input from './Input';
 import Button from './Button';
 import { getCountries } from '../../features/countrySlice';
-import { BiCheck } from 'react-icons/bi';
+import { BiCheck, BiLoader } from 'react-icons/bi';
 const SettingForm = () => {
   const { isLoading, user } = useSelector((state) => state.auth);
   const { data: countriesData } = useSelector((state) => state.countries);

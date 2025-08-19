@@ -5,7 +5,7 @@ import ChangePassword from '../components/ui/ChangePassword';
 import { useEffect } from 'react';
 import { getUser } from '../features/authSlice';
 const Settings = () => {
-  const { isLoading, user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
