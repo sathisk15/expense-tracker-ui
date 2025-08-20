@@ -26,9 +26,7 @@ const LoginSchema = z.object({
 });
 
 const SignIn = () => {
-  const { isLoading, isSuccess, user, token } = useSelector(
-    (state) => state.auth
-  );
+  const { isLoading, isSuccess, token } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
 
@@ -44,8 +42,8 @@ const SignIn = () => {
     dispatch(signInUser(userCredentials));
 
   useEffect(() => {
-    if (isSuccess && user && token) navigate('/dashboard');
-  }, [isSuccess, user, token, navigate]);
+    if (isSuccess && token) navigate('/dashboard');
+  }, [isSuccess, token, navigate]);
 
   return (
     <div className="flex items-center justify-center w-full min-h-screen py-10">

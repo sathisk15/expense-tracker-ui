@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { notifyFailure } from './notificationSlice';
+import { notifyFailure, notifySuccess } from './notificationSlice';
 import api from '../api/apiService';
 
 const initialState = {
@@ -15,6 +15,28 @@ export const getUser = createAsyncThunk(
     try {
       const response = await api.get('/user');
       localStorage.setItem('user', JSON.stringify(response.data.user));
+
+      return response.data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error.message;
+      dispatch(notifyFailure(errorMessage));
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.put('/user', data);
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      dispatch(
+        notifySuccess(
+          response.data.message.includes('success') &&
+            'Profile information updated Successfully'
+        )
+      );
       return response.data;
     } catch (error) {
       const errorMessage = error?.response?.data?.message || error.message;
@@ -27,7 +49,6 @@ export const getUser = createAsyncThunk(
 const userSlice = createSlice({
   name: 'user',
   initialState,
-
   extraReducers: (builder) =>
     builder
       .addCase(getUser.pending, (state) => {

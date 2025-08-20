@@ -11,7 +11,6 @@ import { BsChevronExpand } from 'react-icons/bs';
 
 export default function SelectInput({ data, selected, setSelected }) {
   const [query, setQuery] = useState('');
-
   const filteredData =
     query === ''
       ? data

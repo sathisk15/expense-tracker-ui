@@ -9,6 +9,7 @@ import { BiLoader } from 'react-icons/bi';
 import SelectInput from './SelectInput';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { updateUser } from '../../features/userSlice';
 const SettingForm = () => {
   const { isLoading, user } = useSelector((state) => state.user);
   const { data: countriesData } = useSelector((state) => state.countries);
@@ -44,27 +45,32 @@ const SettingForm = () => {
     values: normalizeUserValues(user),
     resolver: zodResolver(ProfileSchema),
   });
-  const [selectedCountry, setSelectedCountry] = useState({
-    country: user?.country,
-    currency: user?.currency,
-  });
+  const [selectedCountry, setSelectedCountry] = useState({});
 
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    // dispatch user update action
     const formData = {
-      ...data,
+      firstName: data.firstname,
+      lastName: data.lastname,
+      email: data.email,
+      contact: data.contact,
       country: selectedCountry.name || user?.country,
       currency: selectedCountry.currency || user?.currency,
     };
-
-    console.log(formData);
+    dispatch(updateUser(formData));
   };
 
   useEffect(() => {
     dispatch(getCountries());
   }, [dispatch]);
+
+  useEffect(() => {
+    setSelectedCountry({
+      name: user?.country,
+      currency: user?.currency,
+    });
+  }, [user]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
