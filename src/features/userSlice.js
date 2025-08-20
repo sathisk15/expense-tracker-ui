@@ -46,6 +46,21 @@ export const updateUser = createAsyncThunk(
   }
 );
 
+export const updateUserPassword = createAsyncThunk(
+  'user/updateUserPassword',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.put('/user/update-password', data);
+      dispatch(notifySuccess(response.data.message));
+      return response.data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error.message;
+      dispatch(notifyFailure(errorMessage));
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -60,6 +75,30 @@ const userSlice = createSlice({
         state.user = payload.user;
       })
       .addCase(getUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.message = payload;
+      })
+      .addCase(updateUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(updateUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.message = payload;
+      })
+      .addCase(updateUserPassword.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserPassword.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+      })
+      .addCase(updateUserPassword.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.message = payload;

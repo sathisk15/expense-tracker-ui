@@ -2,16 +2,26 @@ import Input from './Input';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import Button from './Button';
+import { updateUserPassword } from '../../features/userSlice';
+import { useDispatch } from 'react-redux';
+import { BiLoader } from 'react-icons/bi';
 
-const ChangePassword = () => {
+const ChangePassword = ({ isLoading }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
+    reset,
   } = useForm();
 
-  const submitPasswordHandler = () => {};
+  const dispatch = useDispatch();
+
+  const submitPasswordHandler = async (data) => {
+    await dispatch(updateUserPassword(data));
+    reset();
+  };
+
   return (
     <div className="py-20">
       <form onSubmit={handleSubmit(submitPasswordHandler)}>
@@ -73,7 +83,11 @@ const ChangePassword = () => {
             Reset
           </Button>
           <Button type="submit" className="px-8 bg-violet-800 text-white">
-            Change Password
+            {isLoading ? (
+              <BiLoader className="text-2xl text-white animate-spin" />
+            ) : (
+              'Change Password'
+            )}
           </Button>
         </div>
       </form>

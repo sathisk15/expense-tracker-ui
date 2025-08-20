@@ -5,7 +5,7 @@ import ChangePassword from '../components/ui/ChangePassword';
 import { useEffect } from 'react';
 import { getUser } from '../features/userSlice';
 const Settings = () => {
-  const { user } = useSelector((state) => state.user);
+  const { user, isLoading } = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -32,7 +32,7 @@ const Settings = () => {
             </p>
           </div>
           <SettingForm />
-          {!user?.provided && <ChangePassword />}
+          {!user?.provided && <ChangePassword isLoading={isLoading} />}
         </div>
       </div>
     </div>
