@@ -3,14 +3,14 @@ import Title from '../components/ui/Title';
 import SettingForm from '../components/ui/SettingForm';
 import ChangePassword from '../components/ui/ChangePassword';
 import { useEffect } from 'react';
-import { getUser } from '../features/userSlice';
+import { getUserInfo } from '../features/userSlice';
 const Settings = () => {
-  const { user, isLoading } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user.getUserInfo);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getUser());
+    dispatch(getUserInfo());
   }, [dispatch]);
 
   return (
@@ -32,7 +32,7 @@ const Settings = () => {
             </p>
           </div>
           <SettingForm />
-          {!user?.provided && <ChangePassword isLoading={isLoading} />}
+          {!user?.provided && <ChangePassword />}
         </div>
       </div>
     </div>

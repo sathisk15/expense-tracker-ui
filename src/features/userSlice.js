@@ -3,13 +3,26 @@ import { notifyFailure, notifySuccess } from './notificationSlice';
 import api from '../api/apiService';
 
 const initialState = {
-  isLoading: false,
-  user: null,
-  message: null,
-  isSuccess: null,
+  getUserInfo: {
+    isLoading: false,
+    user: null,
+    message: null,
+    isSuccess: null,
+  },
+  updateUserInfo: {
+    isLoading: false,
+    message: null,
+    user: null,
+    isSuccess: null,
+  },
+  updateUserPassword: {
+    isLoading: false,
+    message: null,
+    isSuccess: null,
+  },
 };
 
-export const getUser = createAsyncThunk(
+export const getUserInfo = createAsyncThunk(
   'user/getUser',
   async (_, { dispatch, rejectWithValue }) => {
     try {
@@ -25,7 +38,7 @@ export const getUser = createAsyncThunk(
   }
 );
 
-export const updateUser = createAsyncThunk(
+export const updateUserInfo = createAsyncThunk(
   'user/updateUser',
   async (data, { dispatch, rejectWithValue }) => {
     try {
@@ -66,43 +79,46 @@ const userSlice = createSlice({
   initialState,
   extraReducers: (builder) =>
     builder
-      .addCase(getUser.pending, (state) => {
-        state.isLoading = true;
+      .addCase(getUserInfo.pending, ({ getUserInfo }) => {
+        getUserInfo.isLoading = true;
       })
-      .addCase(getUser.fulfilled, (state, { payload }) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.user = payload.user;
+      .addCase(getUserInfo.fulfilled, ({ getUserInfo }, { payload }) => {
+        getUserInfo.isLoading = false;
+        getUserInfo.isSuccess = true;
+        getUserInfo.user = payload.user;
       })
-      .addCase(getUser.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.isSuccess = false;
-        state.message = payload;
+      .addCase(getUserInfo.rejected, ({ getUserInfo }, { payload }) => {
+        getUserInfo.isLoading = false;
+        getUserInfo.isSuccess = false;
+        getUserInfo.message = payload;
       })
-      .addCase(updateUser.pending, (state) => {
-        state.isLoading = true;
+      .addCase(updateUserInfo.pending, ({ updateUserInfo }) => {
+        updateUserInfo.isLoading = true;
       })
-      .addCase(updateUser.fulfilled, (state) => {
-        state.isLoading = false;
-        state.isSuccess = true;
+      .addCase(updateUserInfo.fulfilled, ({ updateUserInfo }) => {
+        updateUserInfo.isLoading = false;
+        updateUserInfo.isSuccess = true;
       })
-      .addCase(updateUser.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.isSuccess = false;
-        state.message = payload;
+      .addCase(updateUserInfo.rejected, ({ updateUserInfo }, { payload }) => {
+        updateUserInfo.isLoading = false;
+        updateUserInfo.isSuccess = false;
+        updateUserInfo.message = payload;
       })
-      .addCase(updateUserPassword.pending, (state) => {
-        state.isLoading = true;
+      .addCase(updateUserPassword.pending, ({ updateUserPassword }) => {
+        updateUserPassword.isLoading = true;
       })
-      .addCase(updateUserPassword.fulfilled, (state) => {
-        state.isLoading = false;
-        state.isSuccess = true;
+      .addCase(updateUserPassword.fulfilled, ({ updateUserPassword }) => {
+        updateUserPassword.isLoading = false;
+        updateUserPassword.isSuccess = true;
       })
-      .addCase(updateUserPassword.rejected, (state, { payload }) => {
-        state.isLoading = false;
-        state.isSuccess = false;
-        state.message = payload;
-      }),
+      .addCase(
+        updateUserPassword.rejected,
+        ({ updateUserPassword }, { payload }) => {
+          updateUserPassword.isLoading = false;
+          updateUserPassword.isSuccess = false;
+          updateUserPassword.message = payload;
+        }
+      ),
 });
 
 export default userSlice.reducer;

@@ -9,10 +9,18 @@ import { BiLoader } from 'react-icons/bi';
 import SelectInput from './SelectInput';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { updateUser } from '../../features/userSlice';
+import { updateUserInfo } from '../../features/userSlice';
+
 const SettingForm = () => {
-  const { isLoading, user } = useSelector((state) => state.user);
+  const { isLoading: getUserLoading, user } = useSelector(
+    ({ user }) => user.getUserInfo
+  );
+  const { isLoading: updateUserLoading, user: updatedUser } = useSelector(
+    ({ user }) => user.updateUserInfo
+  );
   const { data: countriesData } = useSelector((state) => state.countries);
+
+  const isLoading = getUserLoading || updateUserLoading;
 
   const ProfileSchema = z.object({
     firstname: z
@@ -40,11 +48,13 @@ const SettingForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     defaultValues: normalizeUserValues(user),
     values: normalizeUserValues(user),
     resolver: zodResolver(ProfileSchema),
   });
+
   const [selectedCountry, setSelectedCountry] = useState({});
 
   const dispatch = useDispatch();
@@ -58,7 +68,7 @@ const SettingForm = () => {
       country: selectedCountry.name || user?.country,
       currency: selectedCountry.currency || user?.currency,
     };
-    dispatch(updateUser(formData));
+    dispatch(updateUserInfo(formData));
   };
 
   useEffect(() => {
@@ -71,6 +81,16 @@ const SettingForm = () => {
       currency: user?.currency,
     });
   }, [user]);
+
+  useEffect(() => {
+    if (updatedUser) {
+      reset(normalizeUserValues(updatedUser));
+      setSelectedCountry({
+        name: updatedUser?.country,
+        currency: updatedUser?.currency,
+      });
+    }
+  }, [reset, updatedUser]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">

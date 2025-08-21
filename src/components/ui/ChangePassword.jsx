@@ -1,12 +1,15 @@
 import Input from './Input';
-import React from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from './Button';
 import { updateUserPassword } from '../../features/userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BiLoader } from 'react-icons/bi';
 
-const ChangePassword = ({ isLoading }) => {
+const ChangePassword = () => {
+  const { isLoading, isSuccess } = useSelector(
+    (state) => state.user.updateUserPassword
+  );
   const {
     register,
     handleSubmit,
@@ -17,10 +20,11 @@ const ChangePassword = ({ isLoading }) => {
 
   const dispatch = useDispatch();
 
-  const submitPasswordHandler = async (data) => {
-    await dispatch(updateUserPassword(data));
-    reset();
-  };
+  const submitPasswordHandler = (data) => dispatch(updateUserPassword(data));
+
+  useEffect(() => {
+    isSuccess && reset();
+  }, [isSuccess, reset]);
 
   return (
     <div className="py-20">
@@ -75,13 +79,13 @@ const ChangePassword = ({ isLoading }) => {
           </div>
         </div>
         <div className="flex items-center mt-10 gap-6 justify-end pb-10 border-gray-200 dark:border-gray-800">
-          <Button
+          {/* <Button
             className="px-6 bg-transparent text-black dark:text-white border border-gray-200 dark:border-gray-700"
             type="reset"
             variant="outline"
           >
             Reset
-          </Button>
+          </Button> */}
           <Button type="submit" className="px-8 bg-violet-800 text-white">
             {isLoading ? (
               <BiLoader className="text-2xl text-white animate-spin" />
