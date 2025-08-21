@@ -7,11 +7,11 @@ import Settings from './pages/Settings';
 import Transactions from './pages/Transactions';
 import Notification from './components/ui/Notification';
 import ProtectedRoutes from './utils/ProtectedRoutes';
-import useSyncUserFromLocalStorage from './hooks/useSyncUserFromLocalStorage';
+import useSyncTokenFromLocalStorage from './hooks/useSyncTokenFromLocalStorage';
 
 function App() {
   const theme = 'light';
-  useSyncUserFromLocalStorage();
+  useSyncTokenFromLocalStorage();
   return (
     <main className={theme}>
       <div className="w-full min-h-screen px-6 bg-gray-100 md:px-20 dark:bg-slate-900">

@@ -162,7 +162,7 @@ const SettingForm = () => {
           </select>
         </div>
       </div>
-      <div className="w-full flex items-center justify-between pt-10">
+      {/* <div className="w-full flex items-center justify-between pt-10">
         <div>
           <p className="text-lg text-black dark:text-gray-400 font-semibold">
             Appearance
@@ -180,8 +180,8 @@ const SettingForm = () => {
             <option value="dark">Dark</option>
           </select>
         </div>
-      </div>
-      <div className="w-full flex items-center justify-between pt-10">
+      </div> */}
+      {/* <div className="w-full flex items-center justify-between pt-10">
         <div>
           <p className="text-lg text-black dark:text-gray-400 font-semibold">
             Language
@@ -198,15 +198,15 @@ const SettingForm = () => {
             <option value="english">English</option>
           </select>
         </div>
-      </div>
+      </div> */}
       <div className="flex items-center gap-6 justify-end pb-10 border-gray-200 dark:border-gray-800">
-        <Button
+        {/* <Button
           className="px-6 bg-transparent text-black dark:text-white border border-gray-200 dark:border-gray-700"
           type="reset"
           variant="outline"
         >
           Reset
-        </Button>
+        </Button> */}
         <Button type="submit" className="px-8 bg-violet-800 text-white">
           {isLoading ? (
             <BiLoader className="text-2xl text-white animate-spin" />

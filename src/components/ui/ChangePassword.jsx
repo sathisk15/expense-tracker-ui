@@ -27,7 +27,7 @@ const ChangePassword = () => {
   }, [isSuccess, reset]);
 
   return (
-    <div className="py-20">
+    <div className="py-5">
       <form onSubmit={handleSubmit(submitPasswordHandler)}>
         <div className="">
           <p className="text-xl font-bold text-black dark:text-white mb-1">

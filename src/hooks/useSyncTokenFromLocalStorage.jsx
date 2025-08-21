@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { setAuth } from '../features/authSlice';
 
-const useSyncUserFromLocalStorage = () => {
+const useSyncTokenFromLocalStorage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem('token'));
@@ -11,4 +11,4 @@ const useSyncUserFromLocalStorage = () => {
   return null;
 };
 
-export default useSyncUserFromLocalStorage;
+export default useSyncTokenFromLocalStorage;
