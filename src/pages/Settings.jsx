@@ -3,15 +3,19 @@ import Title from '../components/ui/Title';
 import SettingForm from '../components/ui/SettingForm';
 import ChangePassword from '../components/ui/ChangePassword';
 import { useEffect } from 'react';
-import { getUserInfo } from '../store/features/userSlice';
+import { getUserInfo, resetUser } from '../store/features/userSlice';
+import Loading from '../components/ui/Loading';
 const Settings = () => {
-  const { user } = useSelector((state) => state.user.getUserInfo);
+  const { user, isLoading } = useSelector((state) => state.user.getUserInfo);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUserInfo());
+    return () => dispatch(resetUser());
   }, [dispatch]);
+
+  if (isLoading) return <Loading />;
 
   return (
     <div className="flex flex-col items-center w-full">
