@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { setAuth } from '../features/authSlice';
+import { setAuth } from '../store/features/authSlice';
 
 const useSyncTokenFromLocalStorage = () => {
   const dispatch = useDispatch();
