@@ -3,7 +3,7 @@ import Title from '../components/ui/Title';
 import SettingForm from '../components/ui/SettingForm';
 import ChangePassword from '../components/ui/ChangePassword';
 import { useEffect } from 'react';
-import { getUserInfo } from '../features/userSlice';
+import { getUserInfo } from '../store/features/userSlice';
 const Settings = () => {
   const { user } = useSelector((state) => state.user.getUserInfo);
 
