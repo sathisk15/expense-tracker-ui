@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from '../../components/ui/Card';
 import { useDispatch, useSelector } from 'react-redux';
-import { registerUser, resetAuth } from '../../features/authSlice';
+import { registerUser, resetAuth } from '../../store/features/authSlice';
 
 const RegisterSchema = z.object({
   email: z

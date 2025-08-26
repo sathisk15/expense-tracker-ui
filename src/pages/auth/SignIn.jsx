@@ -14,7 +14,7 @@ import {
   CardTitle,
 } from '../../components/ui/Card';
 import { useDispatch, useSelector } from 'react-redux';
-import { signInUser } from '../../features/authSlice';
+import { signInUser } from '../../store/features/authSlice';
 
 const LoginSchema = z.object({
   email: z
