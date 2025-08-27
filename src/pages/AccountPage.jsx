@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaBtc, FaPaypal } from 'react-icons/fa';
 import { GiCash } from 'react-icons/gi';
 
@@ -8,6 +8,8 @@ import Loading from '../components/ui/Loading';
 import Title from '../components/ui/Title';
 import { MdAdd, MdVerifiedUser } from 'react-icons/md';
 import { getAccountInfo } from '../store/features/accountSlice';
+import AddAccount from '../components/ui/AddAccount';
+
 const ICONS = {
   crypto: (
     <div
@@ -35,7 +37,7 @@ const ICONS = {
   ),
   paypal: (
     <div
-      className="w-12 h-12 bg-blue-670 text-white flex items-center
+      className="w-12 h-12 bg-blue-600 text-white flex items-center
       justify-center rounded-full"
     >
       <FaPaypal size={26} />
@@ -44,11 +46,11 @@ const ICONS = {
 };
 
 const AccountPage = () => {
-  const { user } = useSelector(({ user }) => user.getUserInfo);
   const { accounts, isLoading } = useSelector(
     ({ account }) => account.getAccountInfo
   );
-  const [isOpen, setIsOpen] = useState(false);
+
+  const [isAddAccountOpen, setIsAddAccountOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -64,7 +66,7 @@ const AccountPage = () => {
         <Title title="Accounts Information" />
         <div className="flex items-center gap-4">
           <button
-            onClick={() => setIsOpen(true)}
+            onClick={() => setIsAddAccountOpen(true)}
             className="py-1.5 px-2 rounded bg-black dark:bg-violet-600 text-white dark:text-white flex items-center justify-center"
           >
             <MdAdd size={22} />
@@ -84,7 +86,7 @@ const AccountPage = () => {
               key={account.id + index}
               className="w-full h-48 gap-4 flex bg-gray-50 dark:bg-slate-800 p-3 rounded shadow"
             >
-              <div>{ICONS[account?.account_name]}</div>
+              <div>{ICONS[account?.account_name?.toLowerCase()]}</div>
               <div className="spac-y-2 w-full">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
@@ -122,6 +124,11 @@ const AccountPage = () => {
           ))}
         </div>
       )}
+      <AddAccount
+        isOpen={isAddAccountOpen}
+        setIsOpen={setIsAddAccountOpen}
+        userAccounts={accounts}
+      />
     </div>
   );
 };

@@ -1,0 +1,118 @@
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { generateAccountNumber } from '../../utils/utils';
+import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
+import Button from './Button';
+import { MdOutlineWarning } from 'react-icons/md';
+import Input from './Input';
+import { BiLoader } from 'react-icons/bi';
+
+const accounts = ['Cash', 'Crypto', 'PayPal', 'Visa Debit Card'];
+const AddAccount = ({ isOpen, setIsOpen, userAccounts }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ defaultValues: { account_number: generateAccountNumber() } });
+  const [selectedAccount, setSelectedAccount] = useState(accounts[0]);
+
+  const existingUserAccounts = userAccounts.map((account) =>
+    account.account_name?.toLowerCase()
+  );
+
+  function close() {
+    setIsOpen(false);
+  }
+
+  const onSubmit = async (data) => {
+    console.log({ ...data, name: selectedAccount });
+  };
+  return (
+    <Dialog
+      open={isOpen}
+      as="div"
+      className="relative z-10 focus:outline-none"
+      onClose={close}
+    >
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-center justify-center p-4">
+          <DialogPanel
+            transition
+            className="w-full max-w-md rounded-xl bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
+          >
+            <DialogTitle
+              as="h3"
+              className="text-lg font-medium leading-6 text-gray-900 dark:text-gray-300 mb-4 uppercase"
+            >
+              Add Account
+            </DialogTitle>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+              <div className="flex flex-col gap-1 mb-2">
+                <p className="text-gray-700 dark:text-gray-400 text-sm mb-2">
+                  Select Account
+                </p>
+                <select
+                  onChange={(e) => setSelectedAccount(e.target.value)}
+                  className="bg-transparent appearance-none border border-gray-300 dark:border-gray-800 rounded w-full py-2 px-3 text-gray-700 dark:text-gray-500 outline-none ring-blue-500 dark:placeholder:text-gray-700"
+                >
+                  {accounts.map((account, index) => (
+                    <option
+                      key={account + index}
+                      value={account}
+                      className="w-full flex items-center justify-center dark:bg-slate-900"
+                    >
+                      {account}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {existingUserAccounts?.includes(selectedAccount.toLowerCase()) ? (
+                <div className="flex items-center bg-yellow-400 text-black p-2 mt-6 rounded">
+                  <MdOutlineWarning size={30} />
+                  <span className="text-sm ml-2">
+                    This account is already been activated. Try another one.
+                    Thank you!
+                  </span>
+                </div>
+              ) : (
+                <>
+                  <Input
+                    name="account_number"
+                    label="Account Number"
+                    placeholder="Enter account number"
+                    {...register('account_number', {
+                      required: 'Account Number is required',
+                    })}
+                    error={errors.account_number?.message ?? ''}
+                    className="inputStyle"
+                  />
+                  <Input
+                    type="number"
+                    name="amount"
+                    label="Initial Amount"
+                    placeholder="Enter Amount "
+                    {...register('amount', {
+                      required: 'Initial Amount is required',
+                    })}
+                    error={errors.amount?.message ?? ''}
+                    className="inputStyle"
+                  />
+                  <Button
+                    type="submit"
+                    className="bg-violet-700 text-white w-full mt-4"
+                  >
+                    {/* <BiLoader className="text-xl animate-spin text-white" /> */}
+                    Create Account
+                  </Button>
+                </>
+              )}
+            </form>
+          </DialogPanel>
+        </div>
+      </div>
+    </Dialog>
+  );
+};
+
+export default AddAccount;
