@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaBtc, FaPaypal } from 'react-icons/fa';
 import { GiCash } from 'react-icons/gi';
 
 import { RiVisaLine } from 'react-icons/ri';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../components/ui/Loading';
 import Title from '../components/ui/Title';
 import { MdAdd, MdVerifiedUser } from 'react-icons/md';
-
+import { getAccountInfo } from '../store/features/accountSlice';
 const ICONS = {
   crypto: (
     <div
@@ -45,9 +45,19 @@ const ICONS = {
 
 const AccountPage = () => {
   const { user } = useSelector(({ user }) => user.getUserInfo);
-  if (false) return <Loading />;
-  const data = [];
+  const { accounts, isLoading } = useSelector(
+    ({ account }) => account.getAccountInfo
+  );
   const [isOpen, setIsOpen] = useState(false);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAccountInfo());
+  }, [dispatch]);
+
+  if (isLoading) return <Loading />;
+
   return (
     <div className="w-full py-10">
       <div className="flex items-center justify-between">
@@ -63,13 +73,13 @@ const AccountPage = () => {
         </div>
       </div>
 
-      {data?.length === 0 ? (
+      {accounts?.length === 0 ? (
         <div className="w-full flex items-center justify-center py-10 text-gray-600 dark:text-gray-700 text-lg">
           <span>No Account Found</span>
         </div>
       ) : (
         <div className="w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-6 py-10">
-          {data.map((account, index) => (
+          {accounts.map((account, index) => (
             <div
               key={account.id + index}
               className="w-full h-48 gap-4 flex bg-gray-50 dark:bg-slate-800 p-3 rounded shadow"
