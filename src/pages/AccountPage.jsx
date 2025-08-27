@@ -84,12 +84,12 @@ const AccountPage = () => {
               key={account.id + index}
               className="w-full h-48 gap-4 flex bg-gray-50 dark:bg-slate-800 p-3 rounded shadow"
             >
-              <div>{ICONS[account.type]}</div>
+              <div>{ICONS[account?.account_name]}</div>
               <div className="spac-y-2 w-full">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <p className="text-black dark:text-white text-2xl font-bold">
-                      {account.name}
+                      {account.account_name}
                     </p>
                     <MdVerifiedUser
                       size={26}
@@ -100,6 +100,22 @@ const AccountPage = () => {
                     addMoney={() => handleOpenAddMoney(account)}
                     transerMoney={() => handleTransferMoney(acc)}
                   /> */}
+                </div>
+                <span className="text-gray-600 dark:text-gray-400 font-light leading-loose">
+                  {account.account_number}
+                </span>
+                <p className="text-xs text-gray-600 dark:text-gray-500">
+                  {new Date(account.createdat).toLocaleDateString('en-US', {
+                    dateStyle: 'full',
+                  })}
+                </p>
+                <div className="flex items-center justify-between">
+                  <p className="text-xl text-gray-600 dark:text-gray-400 font-medium">
+                    {account.account_balance}
+                  </p>
+                  <button className="text-sm outline-none text-violet-600 hover:underline">
+                    Add Money
+                  </button>
                 </div>
               </div>
             </div>
