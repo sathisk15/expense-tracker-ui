@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { generateAccountNumber } from '../../utils/utils';
 import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
@@ -6,6 +6,12 @@ import Button from './Button';
 import { MdOutlineWarning } from 'react-icons/md';
 import Input from './Input';
 import { BiLoader } from 'react-icons/bi';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  createAccount,
+  getAccountInfo,
+  resetAccounts,
+} from '../../store/features/accountSlice';
 
 const accounts = ['Cash', 'Crypto', 'PayPal', 'Visa Debit Card'];
 const AddAccount = ({ isOpen, setIsOpen, userAccounts }) => {
@@ -14,19 +20,29 @@ const AddAccount = ({ isOpen, setIsOpen, userAccounts }) => {
     handleSubmit,
     formState: { errors },
   } = useForm({ defaultValues: { account_number: generateAccountNumber() } });
+  const { isLoading, isSuccess } = useSelector(
+    ({ account }) => account.createAccount
+  );
   const [selectedAccount, setSelectedAccount] = useState(accounts[0]);
 
   const existingUserAccounts = userAccounts.map((account) =>
     account.account_name?.toLowerCase()
   );
 
-  function close() {
-    setIsOpen(false);
-  }
+  const dispatch = useDispatch();
 
-  const onSubmit = async (data) => {
-    console.log({ ...data, name: selectedAccount });
-  };
+  const close = useCallback(() => setIsOpen(false), [setIsOpen]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      close();
+      dispatch(getAccountInfo());
+      dispatch(resetAccounts());
+    }
+  }, [dispatch, isSuccess, close]);
+
+  const onSubmit = async (data) =>
+    dispatch(createAccount({ ...data, name: selectedAccount }));
   return (
     <Dialog
       open={isOpen}
@@ -54,6 +70,7 @@ const AddAccount = ({ isOpen, setIsOpen, userAccounts }) => {
                 <select
                   onChange={(e) => setSelectedAccount(e.target.value)}
                   className="bg-transparent appearance-none border border-gray-300 dark:border-gray-800 rounded w-full py-2 px-3 text-gray-700 dark:text-gray-500 outline-none ring-blue-500 dark:placeholder:text-gray-700"
+                  disabled={isLoading}
                 >
                   {accounts.map((account, index) => (
                     <option
@@ -86,6 +103,7 @@ const AddAccount = ({ isOpen, setIsOpen, userAccounts }) => {
                     })}
                     error={errors.account_number?.message ?? ''}
                     className="inputStyle"
+                    disabled={isLoading}
                   />
                   <Input
                     type="number"
@@ -97,13 +115,18 @@ const AddAccount = ({ isOpen, setIsOpen, userAccounts }) => {
                     })}
                     error={errors.amount?.message ?? ''}
                     className="inputStyle"
+                    disabled={isLoading}
                   />
                   <Button
                     type="submit"
                     className="bg-violet-700 text-white w-full mt-4"
+                    disabled={isLoading}
                   >
-                    {/* <BiLoader className="text-xl animate-spin text-white" /> */}
-                    Create Account
+                    {isLoading ? (
+                      <BiLoader className="text-xl animate-spin text-white" />
+                    ) : (
+                      'Create Account'
+                    )}
                   </Button>
                 </>
               )}
