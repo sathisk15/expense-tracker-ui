@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import api from '../../api/apiService';
-import { notifyFailure } from './notificationSlice';
+import { notifyFailure, notifySuccess } from './notificationSlice';
 
 export const getAccountInfo = createAsyncThunk(
   'account/getAccountInfo',
@@ -16,9 +16,29 @@ export const getAccountInfo = createAsyncThunk(
   }
 );
 
+export const createAccount = createAsyncThunk(
+  'account/createAccount',
+  async (accountData, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.post('/account/create-account', accountData);
+      dispatch(notifySuccess(response.data.message));
+      return response.data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error.message;
+      dispatch(notifyFailure(errorMessage));
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 const initialState = {
   getAccountInfo: {
     accounts: [],
+    isLoading: false,
+    isSuccess: null,
+    message: null,
+  },
+  createAccount: {
     isLoading: false,
     isSuccess: null,
     message: null,
@@ -42,6 +62,18 @@ const accountSlice = createSlice({
       .addCase(getAccountInfo.rejected, ({ getAccountInfo }) => {
         getAccountInfo.isLoading = false;
         getAccountInfo.isSuccess = false;
+      })
+      .addCase(createAccount.pending, ({ createAccount }) => {
+        createAccount.isLoading = true;
+      })
+      .addCase(createAccount.fulfilled, ({ createAccount }, { payload }) => {
+        createAccount.isLoading = false;
+        createAccount.isSuccess = true;
+        createAccount.message = payload.message;
+      })
+      .addCase(createAccount.rejected, ({ createAccount }) => {
+        createAccount.isLoading = false;
+        createAccount.isSuccess = false;
       }),
 });
 
