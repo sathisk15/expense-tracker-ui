@@ -9,6 +9,7 @@ import Title from '../components/ui/Title';
 import { MdAdd, MdVerifiedUser } from 'react-icons/md';
 import { getAccountInfo } from '../store/features/accountSlice';
 import AddAccount from '../components/ui/AddAccount';
+import AccountMenu from '../components/ui/AccountMenu';
 
 const ICONS = {
   crypto: (
@@ -58,6 +59,14 @@ const AccountPage = () => {
     dispatch(getAccountInfo());
   }, [dispatch]);
 
+  const handleOpenAddMoney = (account) => {
+    console.log('Add Money', account);
+  };
+
+  const handleOpenTransferMoney = (account) => {
+    console.log('Transfer Money', account);
+  };
+
   if (isLoading) return <Loading />;
 
   return (
@@ -98,10 +107,10 @@ const AccountPage = () => {
                       className="text-emerald-600 ml-1"
                     />
                   </div>
-                  {/* <AccountMenu
+                  <AccountMenu
                     addMoney={() => handleOpenAddMoney(account)}
-                    transerMoney={() => handleTransferMoney(acc)}
-                  /> */}
+                    transferMoney={() => handleOpenTransferMoney(account)}
+                  />
                 </div>
                 <span className="text-gray-600 dark:text-gray-400 font-light leading-loose">
                   {account.account_number}
