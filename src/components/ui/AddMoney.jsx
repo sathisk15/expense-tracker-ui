@@ -1,24 +1,42 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from './Button';
 import { BiLoader } from 'react-icons/bi';
 import Input from './Input';
 import PopUp from './PopUp';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addAmount,
+  getAccountInfo,
+  resetAccounts,
+} from '../../store/features/accountSlice';
 
-const AddMoney = ({ isOpen, setIsOpen }) => {
+const AddMoney = ({ isOpen, setIsOpen, accountId }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
+  const { isLoading, isSuccess } = useSelector(
+    ({ account }) => account.addAmount
+  );
+
   const close = useCallback(() => setIsOpen(false), [setIsOpen]);
 
-  const onSubmit = async (data) => {
-    console.log(data);
-  };
+  const dispatch = useDispatch();
 
-  const isLoading = false;
+  useEffect(() => {
+    if (isSuccess) {
+      close();
+      dispatch(resetAccounts());
+      dispatch(getAccountInfo());
+    }
+  }, [dispatch, isSuccess]);
+
+  const onSubmit = async ({ amount }) => {
+    dispatch(addAmount({ accountId, amount }));
+  };
 
   return (
     <PopUp isOpen={isOpen} close={close} title="Add Money">

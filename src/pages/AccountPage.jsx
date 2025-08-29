@@ -21,7 +21,7 @@ const ICONS = {
       <FaBtc size={26} />
     </div>
   ),
-  'Visa Debit Card': (
+  'visa debit card': (
     <div
       className="w-12 h-12 bg-blue-600 text-white flex items-center
       justify-center rounded-full"
@@ -54,6 +54,7 @@ const AccountPage = () => {
 
   const [isAddAccountOpen, setIsAddAccountOpen] = useState(false);
   const [isAddMoneyOpen, setIsAddMoneyOpen] = useState(false);
+  const [selectedAccountId, setSelectedAccountId] = useState(null);
 
   const dispatch = useDispatch();
 
@@ -61,9 +62,9 @@ const AccountPage = () => {
     dispatch(getAccountInfo());
   }, [dispatch]);
 
-  const handleOpenAddMoney = (account) => {
+  const handleOpenAddMoney = (id) => {
     setIsAddMoneyOpen(true);
-    console.log('Add Money', account);
+    setSelectedAccountId(id);
   };
 
   const handleOpenTransferMoney = (account) => {
@@ -111,7 +112,7 @@ const AccountPage = () => {
                     />
                   </div>
                   <AccountMenu
-                    addMoney={() => handleOpenAddMoney(account)}
+                    addMoney={() => handleOpenAddMoney(account.id)}
                     transferMoney={() => handleOpenTransferMoney(account)}
                   />
                 </div>
@@ -141,7 +142,11 @@ const AccountPage = () => {
         setIsOpen={setIsAddAccountOpen}
         userAccounts={accounts}
       />
-      <AddMoney isOpen={isAddMoneyOpen} setIsOpen={setIsAddMoneyOpen} />
+      <AddMoney
+        isOpen={isAddMoneyOpen}
+        setIsOpen={setIsAddMoneyOpen}
+        accountId={selectedAccountId}
+      />
     </div>
   );
 };

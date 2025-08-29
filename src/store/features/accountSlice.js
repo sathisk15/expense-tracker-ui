@@ -16,6 +16,23 @@ export const getAccountInfo = createAsyncThunk(
   }
 );
 
+export const addAmount = createAsyncThunk(
+  'account/addAmount',
+  async ({ amount, accountId }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.post(`/account/add-funds/${accountId}`, {
+        amount,
+      });
+      dispatch(notifySuccess(response.data.message));
+      return response.data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error.message;
+      dispatch(notifyFailure(errorMessage));
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 export const createAccount = createAsyncThunk(
   'account/createAccount',
   async (accountData, { dispatch, rejectWithValue }) => {
@@ -39,6 +56,11 @@ const initialState = {
     message: null,
   },
   createAccount: {
+    isLoading: false,
+    isSuccess: null,
+    message: null,
+  },
+  addAmount: {
     isLoading: false,
     isSuccess: null,
     message: null,
@@ -77,6 +99,18 @@ const accountSlice = createSlice({
       .addCase(createAccount.rejected, ({ createAccount }) => {
         createAccount.isLoading = false;
         createAccount.isSuccess = false;
+      })
+      .addCase(addAmount.pending, ({ addAmount }) => {
+        addAmount.isLoading = true;
+      })
+      .addCase(addAmount.fulfilled, ({ addAmount }, { payload }) => {
+        addAmount.isLoading = false;
+        addAmount.isSuccess = true;
+        addAmount.message = payload.message;
+      })
+      .addCase(addAmount.rejected, ({ addAmount }) => {
+        addAmount.isLoading = false;
+        addAmount.isSuccess = false;
       }),
 });
 
