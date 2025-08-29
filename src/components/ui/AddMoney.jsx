@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import Button from './Button';
 import { BiLoader } from 'react-icons/bi';
@@ -22,24 +22,22 @@ const AddMoney = ({ isOpen, setIsOpen, accountId }) => {
     ({ account }) => account.addAmount
   );
 
-  const close = useCallback(() => setIsOpen(false), [setIsOpen]);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (isSuccess) {
-      close();
+      setIsOpen(false);
       dispatch(resetAccounts());
       dispatch(getAccountInfo());
     }
-  }, [dispatch, isSuccess]);
+  }, [dispatch, isSuccess, setIsOpen]);
 
   const onSubmit = async ({ amount }) => {
     dispatch(addAmount({ accountId, amount }));
   };
 
   return (
-    <PopUp isOpen={isOpen} close={close} title="Add Money">
+    <PopUp isOpen={isOpen} close={() => setIsOpen(false)} title="Add Money">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <Input
           name="amount"

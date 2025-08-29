@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { generateAccountNumber } from '../../utils/utils';
 import Button from './Button';
@@ -31,21 +31,19 @@ const AddAccount = ({ isOpen, setIsOpen, userAccounts }) => {
 
   const dispatch = useDispatch();
 
-  const close = useCallback(() => setIsOpen(false), [setIsOpen]);
-
   useEffect(() => {
     if (isSuccess) {
-      close();
+      setIsOpen(false);
       dispatch(resetAccounts());
       dispatch(getAccountInfo());
     }
-  }, [dispatch, isSuccess, close]);
+  }, [dispatch, isSuccess, setIsOpen]);
 
   const onSubmit = async (data) =>
     dispatch(createAccount({ ...data, name: selectedAccount }));
 
   return (
-    <PopUp isOpen={isOpen} close={close} title="Add Account">
+    <PopUp isOpen={isOpen} close={() => setIsOpen(false)} title="Add Account">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div className="flex flex-col gap-1 mb-2">
           <p className="text-gray-700 dark:text-gray-400 text-sm mb-2">
