@@ -8,6 +8,7 @@ import { BiLoader } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createAccount,
+  getAccountInfo,
   resetAccounts,
 } from '../../store/features/accountSlice';
 import PopUp from './PopUp';
@@ -36,6 +37,7 @@ const AddAccount = ({ isOpen, setIsOpen, userAccounts }) => {
     if (isSuccess) {
       close();
       dispatch(resetAccounts());
+      dispatch(getAccountInfo());
     }
   }, [dispatch, isSuccess, close]);
 
