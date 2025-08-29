@@ -10,6 +10,7 @@ import { MdAdd, MdVerifiedUser } from 'react-icons/md';
 import { getAccountInfo } from '../store/features/accountSlice';
 import AddAccount from '../components/ui/AddAccount';
 import AccountMenu from '../components/ui/AccountMenu';
+import AddMoney from '../components/ui/AddMoney';
 
 const ICONS = {
   crypto: (
@@ -52,6 +53,7 @@ const AccountPage = () => {
   );
 
   const [isAddAccountOpen, setIsAddAccountOpen] = useState(false);
+  const [isAddMoneyOpen, setIsAddMoneyOpen] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -60,6 +62,7 @@ const AccountPage = () => {
   }, [dispatch]);
 
   const handleOpenAddMoney = (account) => {
+    setIsAddMoneyOpen(true);
     console.log('Add Money', account);
   };
 
@@ -138,6 +141,7 @@ const AccountPage = () => {
         setIsOpen={setIsAddAccountOpen}
         userAccounts={accounts}
       />
+      <AddMoney isOpen={isAddMoneyOpen} setIsOpen={setIsAddMoneyOpen} />
     </div>
   );
 };

@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { generateAccountNumber } from '../../utils/utils';
-import { Dialog, DialogPanel, DialogTitle } from '@headlessui/react';
 import Button from './Button';
 import { MdOutlineWarning } from 'react-icons/md';
 import Input from './Input';
