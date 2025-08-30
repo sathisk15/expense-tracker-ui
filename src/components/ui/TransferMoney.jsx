@@ -4,18 +4,27 @@ import { useDispatch } from 'react-redux';
 import PopUp from './PopUp';
 import Input from './Input';
 import Button from './Button';
+import { MdOutlineWarning } from 'react-icons/md';
 
-const TransferMoney = ({ isOpen, setIsOpen, accounts }) => {
+const TransferMoney = ({ isOpen, setIsOpen, accounts, selectedAccountId }) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   //   const { isLoading, isSuccess } = useSelector(
   //     ({ account }) => account.createAccount
   //   );
-  const [selectedAccount, setSelectedAccount] = useState(null);
 
+  const [selectedFromAccount, setSelectedFromAccount] =
+    useState(selectedAccountId);
+  const [selectedToAccount, setSelectedToAccount] = useState(null);
+
+  useEffect(() => {
+    setSelectedFromAccount(selectedAccountId);
+  }, [selectedAccountId]);
+  console.log(selectedFromAccount, selectedToAccount);
   //   const dispatch = useDispatch();
 
   //   useEffect(() => {
@@ -26,8 +35,15 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts }) => {
   //     }
   //   }, [dispatch, isSuccess, setIsOpen]);
 
-  const onSubmit = async (data) => console.log(data);
-  console.log(accounts);
+  const onSubmit = async ({ amount }) => {
+    const data = {
+      fromAccountId: selectedFromAccount,
+      toAccountId: selectedToAccount,
+      amount,
+    };
+    console.log(data);
+  };
+
   return (
     <PopUp
       isOpen={isOpen}
@@ -40,9 +56,10 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts }) => {
             From Account
           </p>
           <select
-            onChange={(e) => setSelectedAccount(e.target.value)}
+            onChange={(e) => setSelectedFromAccount(e.target.value)}
             className="bg-transparent appearance-none border border-gray-300 dark:border-gray-800 rounded w-full py-2 px-3 text-gray-700 dark:text-gray-500 outline-none ring-blue-500 dark:placeholder:text-gray-700"
             // disabled={isLoading}
+            value={selectedFromAccount}
           >
             <option
               key={'account + index'}
@@ -51,13 +68,13 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts }) => {
             >
               {'Select Account'}
             </option>
-            {accounts.map((account, index) => (
+            {accounts.map(({ account_name, account_number, id }, idx) => (
               <option
-                key={account + index}
-                value={account.account_name}
+                key={account_number + '' + idx}
+                value={id}
                 className="w-full flex items-center justify-center dark:bg-slate-900"
               >
-                {account.account_name}
+                {`${account_name} (${account_number})`}
               </option>
             ))}
           </select>
@@ -67,7 +84,7 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts }) => {
             To Account
           </p>
           <select
-            onChange={(e) => setSelectedAccount(e.target.value)}
+            onChange={(e) => setSelectedToAccount(e.target.value)}
             className="bg-transparent appearance-none border border-gray-300 dark:border-gray-800 rounded w-full py-2 px-3 text-gray-700 dark:text-gray-500 outline-none ring-blue-500 dark:placeholder:text-gray-700"
             // disabled={isLoading}
           >
@@ -78,13 +95,13 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts }) => {
             >
               {'Select Account'}
             </option>
-            {accounts.map((account, index) => (
+            {accounts.map(({ account_name, account_number, id }, idx) => (
               <option
-                key={account + index}
-                value={account.account_name}
+                key={account_number + '' + idx}
+                value={id}
                 className="w-full flex items-center justify-center dark:bg-slate-900"
               >
-                {account.account_name}
+                {`${account_name} (${account_number})`}
               </option>
             ))}
           </select>
@@ -102,17 +119,26 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts }) => {
           className="inputStyle"
           //   disabled={isLoading}
         />
-        <Button
-          type="submit"
-          className="bg-violet-700 text-white w-full mt-4"
-          //   disabled={isLoading}
-        >
-          {false ? (
-            <BiLoader className="text-xl animate-spin text-white" />
-          ) : (
-            'Transfer Money'
-          )}
-        </Button>
+        {selectedFromAccount === selectedToAccount ? (
+          <div className="flex items-center bg-yellow-400 text-black p-2 mt-6 rounded">
+            <MdOutlineWarning size={30} />
+            <span className="text-sm ml-2">
+              From Account and To Account must be different. Thank you!
+            </span>
+          </div>
+        ) : (
+          <Button
+            type="submit"
+            className="bg-violet-700 text-white w-full mt-4"
+            //   disabled={isLoading}
+          >
+            {false ? (
+              <BiLoader className="text-xl animate-spin text-white" />
+            ) : (
+              'Transfer Money'
+            )}
+          </Button>
+        )}
       </form>
     </PopUp>
   );

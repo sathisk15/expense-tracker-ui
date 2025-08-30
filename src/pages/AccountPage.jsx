@@ -69,8 +69,9 @@ const AccountPage = () => {
     setSelectedAccountId(id);
   };
 
-  const handleOpenTransferMoney = () => {
+  const handleOpenTransferMoney = (id) => {
     setIsTransferMoneyOpen(true);
+    setSelectedAccountId(id);
   };
 
   if (isLoading) return <Loading />;
@@ -150,6 +151,7 @@ const AccountPage = () => {
         isOpen={isTransferMoneyOpen}
         setIsOpen={setIsTransferMoneyOpen}
         accounts={accounts}
+        selectedAccountId={selectedAccountId}
       />
     </div>
   );
