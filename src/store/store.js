@@ -4,6 +4,7 @@ import notificationReducer from '../store/features/notificationSlice';
 import countriesReducer from '../store/features/countrySlice';
 import userReducer from '../store/features/userSlice';
 import accountReducer from '../store/features/accountSlice';
+import transactionReducer from '../store/features/transactionSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     countries: countriesReducer,
     user: userReducer,
     account: accountReducer,
+    transaction: transactionReducer,
   },
 });
