@@ -11,6 +11,7 @@ import { getAccountInfo } from '../store/features/accountSlice';
 import AddAccount from '../components/ui/AddAccount';
 import AccountMenu from '../components/ui/AccountMenu';
 import AddMoney from '../components/ui/AddMoney';
+import TransferMoney from '../components/ui/TransferMoney';
 
 const ICONS = {
   crypto: (
@@ -54,6 +55,7 @@ const AccountPage = () => {
 
   const [isAddAccountOpen, setIsAddAccountOpen] = useState(false);
   const [isAddMoneyOpen, setIsAddMoneyOpen] = useState(false);
+  const [isTransferMoneyOpen, setIsTransferMoneyOpen] = useState(false);
   const [selectedAccountId, setSelectedAccountId] = useState(null);
 
   const dispatch = useDispatch();
@@ -67,8 +69,8 @@ const AccountPage = () => {
     setSelectedAccountId(id);
   };
 
-  const handleOpenTransferMoney = (account) => {
-    console.log('Transfer Money', account);
+  const handleOpenTransferMoney = () => {
+    setIsTransferMoneyOpen(true);
   };
 
   if (isLoading) return <Loading />;
@@ -113,7 +115,7 @@ const AccountPage = () => {
                   </div>
                   <AccountMenu
                     addMoney={() => handleOpenAddMoney(account.id)}
-                    transferMoney={() => handleOpenTransferMoney(account)}
+                    transferMoney={() => handleOpenTransferMoney(account.id)}
                   />
                 </div>
                 <span className="text-gray-600 dark:text-gray-400 font-light leading-loose">
@@ -128,9 +130,6 @@ const AccountPage = () => {
                   <p className="text-xl text-gray-600 dark:text-gray-400 font-medium">
                     {account.account_balance}
                   </p>
-                  <button className="text-sm outline-none text-violet-600 hover:underline">
-                    Add Money
-                  </button>
                 </div>
               </div>
             </div>
@@ -146,6 +145,11 @@ const AccountPage = () => {
         isOpen={isAddMoneyOpen}
         setIsOpen={setIsAddMoneyOpen}
         accountId={selectedAccountId}
+      />
+      <TransferMoney
+        isOpen={isTransferMoneyOpen}
+        setIsOpen={setIsTransferMoneyOpen}
+        accounts={accounts}
       />
     </div>
   );
