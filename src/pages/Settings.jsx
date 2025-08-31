@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import Title from '../components/ui/shared/Title';
-import SettingForm from '../components/ui/SettingForm';
-import ChangePassword from '../components/ui/ChangePassword';
+import SettingForm from '../components/ui/settings/SettingForm';
+import ChangePassword from '../components/ui/settings/ChangePassword';
 import { useEffect } from 'react';
 import { getUserInfo, resetUser } from '../store/features/userSlice';
 import Loading from '../components/ui/shared/Loading';

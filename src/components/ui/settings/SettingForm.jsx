@@ -3,13 +3,13 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import Input from './Input';
 import Button from './Button';
-import { getCountries } from '../../store/features/countrySlice';
+import { getCountries } from '../../../store/features/countrySlice';
 import { BiLoader } from 'react-icons/bi';
 
-import SelectInput from './SelectInput';
+import SelectInput from '../SelectInput';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { updateUserInfo } from '../../store/features/userSlice';
+import { updateUserInfo } from '../../../store/features/userSlice';
 
 const SettingForm = () => {
   const { isLoading: getUserLoading, user } = useSelector(
