@@ -124,7 +124,8 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts, selectedAccountId }) => {
           className="inputStyle"
           disabled={isLoading}
         />
-        {selectedFromAccount === selectedToAccount ? (
+
+        {selectedFromAccount == selectedToAccount ? (
           <div className="flex items-center bg-yellow-400 text-black p-2 mt-6 rounded">
             <MdOutlineWarning size={30} />
             <span className="text-sm ml-2">
