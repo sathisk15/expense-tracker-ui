@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router-dom';
-import Navbar from '../components/ui/Navbar';
+import Navbar from '../components/ui/shared/Navbar';
 import { isTokenExpired } from './utils';
 
 const ProtectedRoutes = () => {

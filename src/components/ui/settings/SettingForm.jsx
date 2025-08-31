@@ -6,7 +6,7 @@ import Button from './Button';
 import { getCountries } from '../../../store/features/countrySlice';
 import { BiLoader } from 'react-icons/bi';
 
-import SelectInput from '../SelectInput';
+import SelectInput from './SelectInput';
 import z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { updateUserInfo } from '../../../store/features/userSlice';

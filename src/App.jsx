@@ -5,7 +5,7 @@ import Dashboard from './pages/Dashboard';
 import Account from './pages/Account';
 import Settings from './pages/Settings';
 import Transactions from './pages/Transactions';
-import Notification from './components/ui/Notification';
+import Notification from './components/ui/shared/Notification';
 import ProtectedRoutes from './utils/ProtectedRoutes';
 import useSyncTokenFromLocalStorage from './hooks/useSyncTokenFromLocalStorage';
 
