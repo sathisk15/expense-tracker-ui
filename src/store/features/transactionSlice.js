@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { notifyFailure, notifySuccess } from './notificationSlice';
 import api from '../../api/apiService';
 
-const transferFunds = createAsyncThunk(
-  'transaction',
+export const transferFunds = createAsyncThunk(
+  'transaction/transferFunds',
   async (data, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.post('/transaction', data);
@@ -28,6 +28,9 @@ const initialState = {
 const transactionSlice = createSlice({
   name: 'transaction',
   initialState,
+  reducers: {
+    resetTransaction: () => initialState,
+  },
   extraReducers: (builder) =>
     builder
       .addCase(transferFunds.fulfilled, ({ transferFunds }, action) => {
@@ -45,7 +48,6 @@ const transactionSlice = createSlice({
       }),
 });
 
-export const { createTransaction, setLoading, setError } =
-  transactionSlice.actions;
+export const { resetTransaction } = transactionSlice.actions;
 
 export default transactionSlice.reducer;

@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PopUp from './PopUp';
 import Input from './Input';
 import Button from './Button';
 import { MdOutlineWarning } from 'react-icons/md';
+import {
+  resetTransaction,
+  transferFunds,
+} from '../../store/features/transactionSlice';
+import { getAccountInfo } from '../../store/features/accountSlice';
+import { BiLoader } from 'react-icons/bi';
 
 const TransferMoney = ({ isOpen, setIsOpen, accounts, selectedAccountId }) => {
   const {
@@ -13,9 +19,9 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts, selectedAccountId }) => {
     formState: { errors },
   } = useForm();
 
-  //   const { isLoading, isSuccess } = useSelector(
-  //     ({ account }) => account.createAccount
-  //   );
+  const { isLoading, isSuccess } = useSelector(
+    ({ transaction }) => transaction.transferFunds
+  );
 
   const [selectedFromAccount, setSelectedFromAccount] =
     useState(selectedAccountId);
@@ -24,24 +30,23 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts, selectedAccountId }) => {
   useEffect(() => {
     setSelectedFromAccount(selectedAccountId);
   }, [selectedAccountId]);
-  console.log(selectedFromAccount, selectedToAccount);
-  //   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  //   useEffect(() => {
-  //     if (isSuccess) {
-  //       setIsOpen(false);
-  //       dispatch(resetAccounts());
-  //       dispatch(getAccountInfo());
-  //     }
-  //   }, [dispatch, isSuccess, setIsOpen]);
+  useEffect(() => {
+    if (isSuccess) {
+      setIsOpen(false);
+      dispatch(resetTransaction());
+      dispatch(getAccountInfo());
+    }
+  }, [dispatch, isSuccess, setIsOpen]);
 
-  const onSubmit = async ({ amount }) => {
+  const onSubmit = ({ amount }) => {
     const data = {
       fromAccountId: selectedFromAccount,
       toAccountId: selectedToAccount,
       amount,
     };
-    console.log(data);
+    dispatch(transferFunds(data));
   };
 
   return (
@@ -86,7 +91,7 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts, selectedAccountId }) => {
           <select
             onChange={(e) => setSelectedToAccount(e.target.value)}
             className="bg-transparent appearance-none border border-gray-300 dark:border-gray-800 rounded w-full py-2 px-3 text-gray-700 dark:text-gray-500 outline-none ring-blue-500 dark:placeholder:text-gray-700"
-            // disabled={isLoading}
+            disabled={isLoading}
           >
             <option
               key={'account + index'}
@@ -117,7 +122,7 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts, selectedAccountId }) => {
           })}
           error={errors.amount?.message ?? ''}
           className="inputStyle"
-          //   disabled={isLoading}
+          disabled={isLoading}
         />
         {selectedFromAccount === selectedToAccount ? (
           <div className="flex items-center bg-yellow-400 text-black p-2 mt-6 rounded">
@@ -130,9 +135,9 @@ const TransferMoney = ({ isOpen, setIsOpen, accounts, selectedAccountId }) => {
           <Button
             type="submit"
             className="bg-violet-700 text-white w-full mt-4"
-            //   disabled={isLoading}
+            disabled={isLoading}
           >
-            {false ? (
+            {isLoading ? (
               <BiLoader className="text-xl animate-spin text-white" />
             ) : (
               'Transfer Money'
