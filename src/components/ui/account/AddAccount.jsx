@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { generateAccountNumber } from '../../utils/utils';
-import Button from './shared/Button';
+import { generateAccountNumber } from '../../../utils/utils';
+import Button from '../shared/Button';
 import { MdOutlineWarning } from 'react-icons/md';
-import Input from './shared/Input';
+import Input from '../shared/Input';
 import { BiLoader } from 'react-icons/bi';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   createAccount,
   getAccountInfo,
   resetAccounts,
-} from '../../store/features/accountSlice';
-import PopUp from './shared/PopUp';
+} from '../../../store/features/accountSlice';
+import PopUp from '../shared/PopUp';
 
 const accounts = ['Cash', 'Crypto', 'PayPal', 'Visa Debit Card'];
 const AddAccount = ({ isOpen, setIsOpen, userAccounts }) => {

@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import SignIn from './pages/auth/SignIn';
 import SignUp from './pages/auth/SignUp';
 import Dashboard from './pages/Dashboard';
-import AccountPage from './pages/AccountPage';
+import Account from './pages/Account';
 import Settings from './pages/Settings';
 import Transactions from './pages/Transactions';
 import Notification from './components/ui/Notification';
@@ -20,7 +20,7 @@ function App() {
           <Route element={<ProtectedRoutes />}>
             <Route path="/" element={<Navigate to={'/dashboard'} />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/accounts" element={<AccountPage />} />
+            <Route path="/accounts" element={<Account />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/transactions" element={<Transactions />} />
           </Route>

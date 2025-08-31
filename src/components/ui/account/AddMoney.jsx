@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import Button from './shared/Button';
+import Button from '../shared/Button';
 import { BiLoader } from 'react-icons/bi';
-import Input from './shared/Input';
-import PopUp from './shared/PopUp';
+import Input from '../shared/Input';
+import PopUp from '../shared/PopUp';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addAmount,
   getAccountInfo,
   resetAccounts,
-} from '../../store/features/accountSlice';
+} from '../../../store/features/accountSlice';
 
 const AddMoney = ({ isOpen, setIsOpen, accountId }) => {
   const {

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import PopUp from './shared/PopUp';
-import Input from './shared/Input';
-import Button from './shared/Button';
+import PopUp from '../shared/PopUp';
+import Input from '../shared/Input';
+import Button from '../shared/Button';
 import { MdOutlineWarning } from 'react-icons/md';
 import {
   resetTransaction,
   transferFunds,
-} from '../../store/features/transactionSlice';
-import { getAccountInfo } from '../../store/features/accountSlice';
+} from '../../../store/features/transactionSlice';
+import { getAccountInfo } from '../../../store/features/accountSlice';
 import { BiLoader } from 'react-icons/bi';
 
 const TransferMoney = ({ isOpen, setIsOpen, accounts, selectedAccountId }) => {

@@ -8,10 +8,10 @@ import Loading from '../components/ui/shared/Loading';
 import Title from '../components/ui/shared/Title';
 import { MdAdd, MdVerifiedUser } from 'react-icons/md';
 import { getAccountInfo } from '../store/features/accountSlice';
-import AddAccount from '../components/ui/AddAccount';
-import AccountMenu from '../components/ui/AccountMenu';
-import AddMoney from '../components/ui/AddMoney';
-import TransferMoney from '../components/ui/TransferMoney';
+import AddAccount from '../components/ui/account/AddAccount';
+import AccountMenu from '../components/ui/account/AccountMenu';
+import AddMoney from '../components/ui/account/AddMoney';
+import TransferMoney from '../components/ui/account/TransferMoney';
 
 const ICONS = {
   crypto: (
