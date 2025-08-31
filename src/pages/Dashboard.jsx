@@ -1,9 +1,9 @@
-import Info from '../components/ui/Info';
-import Stats from '../components/ui/Stats';
-import Chart from '../components/ui/Chart';
-import Transactions from '../components/ui/Transactions';
-import DoughnutChart from '../components/ui/DouhgnutChart';
-import Accounts from '../components/ui/Accounts';
+import Info from '../components/ui/dashboard/Info';
+import Stats from '../components/ui/dashboard/Stats';
+import Chart from '../components/ui/dashboard/Chart';
+import Transactions from '../components/ui/dashboard/Transactions';
+import DoughnutChart from '../components/ui/dashboard/DouhgnutChart';
+import Accounts from '../components/ui/dashboard/Accounts';
 
 const Dashboard = () => {
   return (
