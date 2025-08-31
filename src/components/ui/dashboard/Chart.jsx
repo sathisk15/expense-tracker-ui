@@ -8,7 +8,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import Title from './Title';
+import Title from '../shared/Title';
 
 const data = [
   { label: 'January', income: 5000, expense: 3000 },

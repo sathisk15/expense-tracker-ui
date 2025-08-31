@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaBtc } from 'react-icons/fa';
 import { RiVisaLine } from 'react-icons/ri';
-import Title from './Title';
+import Title from '../shared/Title';
 
 const data = [
   {

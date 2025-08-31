@@ -1,4 +1,4 @@
-import Title from './Title';
+import Title from '../shared/Title';
 import { IoCheckmarkDoneCircle } from 'react-icons/io5';
 import { RiProgress1Line } from 'react-icons/ri';
 import { TiWarning } from 'react-icons/ti';

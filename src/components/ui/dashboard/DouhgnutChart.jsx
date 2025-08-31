@@ -6,7 +6,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from 'recharts';
-import Title from './Title';
+import Title from '../shared/Title';
 
 const data = [
   { name: 'Income', value: 15565 },

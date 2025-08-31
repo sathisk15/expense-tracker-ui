@@ -1,10 +1,10 @@
-import Input from './Input';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import Button from './Button';
 import { updateUserPassword } from '../../../store/features/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { BiLoader } from 'react-icons/bi';
+import Input from '../shared/Input';
+import Button from '../shared/Button';
 
 const ChangePassword = () => {
   const { isLoading, isSuccess } = useSelector(

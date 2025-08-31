@@ -1,6 +1,6 @@
 import { RiCurrencyLine } from 'react-icons/ri';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
-import avatar from '../../images/avatar.png';
+import avatar from '../../../assets/images/avatar.png';
 import ThemeSwitch from './ThemeSwitch';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
