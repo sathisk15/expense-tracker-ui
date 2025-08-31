@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import Button from './Button';
+import Button from './shared/Button';
 import { BiLoader } from 'react-icons/bi';
-import Input from './Input';
-import PopUp from './PopUp';
+import Input from './shared/Input';
+import PopUp from './shared/PopUp';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addAmount,

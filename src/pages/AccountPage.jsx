@@ -4,8 +4,8 @@ import { GiCash } from 'react-icons/gi';
 
 import { RiVisaLine } from 'react-icons/ri';
 import { useDispatch, useSelector } from 'react-redux';
-import Loading from '../components/ui/Loading';
-import Title from '../components/ui/Title';
+import Loading from '../components/ui/shared/Loading';
+import Title from '../components/ui/shared/Title';
 import { MdAdd, MdVerifiedUser } from 'react-icons/md';
 import { getAccountInfo } from '../store/features/accountSlice';
 import AddAccount from '../components/ui/AddAccount';

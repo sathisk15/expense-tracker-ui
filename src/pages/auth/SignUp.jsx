@@ -1,8 +1,8 @@
 import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Input from '../../components/ui/Input';
-import Button from '../../components/ui/Button';
+import Input from '../../components/ui/shared/Input';
+import Button from '../../components/ui/shared/Button';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { BiLoader } from 'react-icons/bi';
@@ -12,7 +12,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../../components/ui/Card';
+} from '../../components/ui/shared/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, resetAuth } from '../../store/features/authSlice';
 

@@ -1,10 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux';
-import Title from '../components/ui/Title';
+import Title from '../components/ui/shared/Title';
 import SettingForm from '../components/ui/SettingForm';
 import ChangePassword from '../components/ui/ChangePassword';
 import { useEffect } from 'react';
 import { getUserInfo, resetUser } from '../store/features/userSlice';
-import Loading from '../components/ui/Loading';
+import Loading from '../components/ui/shared/Loading';
+
 const Settings = () => {
   const { user, isLoading } = useSelector((state) => state.user.getUserInfo);
 
