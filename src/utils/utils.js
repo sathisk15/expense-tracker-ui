@@ -1,5 +1,9 @@
 import { jwtDecode } from 'jwt-decode';
 import { v4 as uuidv4 } from 'uuid';
+import { FaBtc, FaPaypal } from 'react-icons/fa';
+import { RiVisaLine } from 'react-icons/ri';
+import { GiCash } from 'react-icons/gi';
+import { TbBrandCashapp } from 'react-icons/tb';
 
 export const isTokenExpired = (token) => {
   if (!token) return true;
@@ -40,4 +44,19 @@ export const maskAccountNumber = (accountNumber) => {
   const lastFourDigit = accountNumber.slice(-4);
   const mask = '*'.repeat(accountNumber.length - 8);
   return firstFourDigit + mask + lastFourDigit;
+};
+
+export const getIcon = (type) => {
+  switch (type) {
+    case 'crypto':
+      return [FaBtc, 'amber'];
+    case 'visa debit card':
+      return [RiVisaLine, 'blue'];
+    case 'cash':
+      return [GiCash, 'rose'];
+    case 'paypal':
+      return [FaPaypal, 'blue'];
+    default:
+      return [TbBrandCashapp, 'emerald'];
+  }
 };

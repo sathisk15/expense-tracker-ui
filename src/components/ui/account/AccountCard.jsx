@@ -1,33 +1,15 @@
-import { FaBtc, FaPaypal } from 'react-icons/fa';
 import {
   formatAccountNumber,
   formatCurrency,
   formatDateFullStyle,
+  getIcon,
   maskAccountNumber,
 } from '../../../utils/utils';
-import { RiVisaLine } from 'react-icons/ri';
-import { GiCash } from 'react-icons/gi';
 import { MdVerifiedUser } from 'react-icons/md';
 import AccountMenu from './AccountMenu';
 import { useState } from 'react';
 import { AiFillEyeInvisible } from 'react-icons/ai';
 import { IoEyeSharp } from 'react-icons/io5';
-import { TbBrandCashapp } from 'react-icons/tb';
-
-const getIcon = (type) => {
-  switch (type) {
-    case 'crypto':
-      return [FaBtc, 'amber'];
-    case 'visa debit card':
-      return [RiVisaLine, 'blue'];
-    case 'cash':
-      return [GiCash, 'rose'];
-    case 'paypal':
-      return [FaPaypal, 'blue'];
-    default:
-      return [TbBrandCashapp, 'emerald'];
-  }
-};
 
 const AccountCard = ({ account, index, addMoney, transferMoney }) => {
   const [isAccountNumberMasked, setIsAccountNumberMasked] = useState(true);
