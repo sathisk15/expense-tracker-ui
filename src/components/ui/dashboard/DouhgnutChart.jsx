@@ -8,14 +8,13 @@ import {
 } from 'recharts';
 import Title from '../shared/Title';
 
-const data = [
-  { name: 'Income', value: 15565 },
-  { name: 'Expense', value: 5885 },
-];
-
 const COLORS = ['#0088FE', '#FFBB28', '#FF8042', '#00C49F'];
 
-const DoughnutChart = () => {
+const DoughnutChart = ({ income, expense }) => {
+  const data = [
+    { name: 'Income', value: income },
+    { name: 'Expense', value: expense },
+  ];
   return (
     <div className="w-full md:w-1/3 flex flex-col items-center bg-gray-50 dark:bg-transparent">
       <Title title="Summary" />

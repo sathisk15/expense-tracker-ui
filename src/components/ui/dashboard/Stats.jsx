@@ -2,34 +2,33 @@ import { SiCashapp } from 'react-icons/si';
 import { BsCashCoin, BsCurrencyDollar } from 'react-icons/bs';
 import { IoMdArrowUp, IoMdArrowDown } from 'react-icons/io';
 
-const data = [
-  {
-    label: 'Your Total Balance',
-    amount: '100,101,00',
-    increase: 10.9,
-    icon: <BsCurrencyDollar size={26} />,
-  },
-  {
-    label: 'Total Income',
-    amount: '100,101,00',
-    increase: 8.9,
-    icon: <BsCashCoin size={26} />,
-  },
-  {
-    label: 'Total Expense',
-    amount: '100,99,00',
-    increase: -10.9,
-    icon: <SiCashapp size={26} />,
-  },
-];
-
 const ICON_STYLES = [
   'bg-blue-300 text-blue-800',
   'bg-emerald-300 text-emerald-800',
   'bg-rose-300 text-rose-800',
 ];
 
-const Stats = () => {
+const Stats = ({ balance, income, expense }) => {
+  const data = [
+    {
+      label: 'Your Total Balance',
+      amount: balance,
+      increase: 10.9,
+      icon: <BsCurrencyDollar size={26} />,
+    },
+    {
+      label: 'Total Income',
+      amount: income,
+      increase: 8.9,
+      icon: <BsCashCoin size={26} />,
+    },
+    {
+      label: 'Total Expense',
+      amount: expense,
+      increase: -10.9,
+      icon: <SiCashapp size={26} />,
+    },
+  ];
   return (
     <div className="flex flex-col md:flex-row items-center justify-between gap-8 2xl:gap-30 mb-20">
       {data.map((item, idx) => (

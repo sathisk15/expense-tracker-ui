@@ -10,22 +10,7 @@ import {
 } from 'recharts';
 import Title from '../shared/Title';
 
-const data = [
-  { label: 'January', income: 5000, expense: 3000 },
-  { label: 'Febrary', income: 5000, expense: 3000 },
-  { label: 'March', income: 5000, expense: 3000 },
-  { label: 'April', income: 5000, expense: 3000 },
-  { label: 'May', income: 5000, expense: 3000 },
-  { label: 'June', income: 5000, expense: 3000 },
-  { label: 'July', income: 5000, expense: 3000 },
-  { label: 'August', income: 5000, expense: 3000 },
-  { label: 'September', income: 5000, expense: 3000 },
-  { label: 'October', income: 5000, expense: 3000 },
-  { label: 'November', income: 5000, expense: 3000 },
-  { label: 'December', income: 5000, expense: 3000 },
-];
-
-const Chart = () => {
+const Chart = ({ data }) => {
   return (
     <div className="w-full md:w-2/3">
       <Title title={'Transaction Activity'} />
