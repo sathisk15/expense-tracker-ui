@@ -18,7 +18,9 @@ const SettingForm = () => {
   const { isLoading: updateUserLoading, user: updatedUser } = useSelector(
     ({ user }) => user.updateUserInfo
   );
-  const { data: countriesData } = useSelector((state) => state.countries);
+  const { data: countriesData, isSuccess } = useSelector(
+    (state) => state.countries
+  );
 
   const isLoading = getUserLoading || updateUserLoading;
 
@@ -72,8 +74,8 @@ const SettingForm = () => {
   };
 
   useEffect(() => {
-    dispatch(getCountries());
-  }, [dispatch]);
+    !isSuccess && dispatch(getCountries());
+  }, [dispatch, isSuccess]);
 
   useEffect(() => {
     setSelectedCountry({

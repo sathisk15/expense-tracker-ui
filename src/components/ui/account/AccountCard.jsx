@@ -12,40 +12,21 @@ import AccountMenu from './AccountMenu';
 import { useState } from 'react';
 import { AiFillEyeInvisible } from 'react-icons/ai';
 import { IoEyeSharp } from 'react-icons/io5';
+import { TbBrandCashapp } from 'react-icons/tb';
 
-const ICONS = {
-  crypto: (
-    <div
-      className="w-12 h-12 bg-amber-600 text-white flex items-center
-      justify-center rounded-full"
-    >
-      <FaBtc size={26} />
-    </div>
-  ),
-  'visa debit card': (
-    <div
-      className="w-12 h-12 bg-blue-600 text-white flex items-center
-      justify-center rounded-full"
-    >
-      <RiVisaLine size={26} />
-    </div>
-  ),
-  cash: (
-    <div
-      className="w-12 h-12 bg-rose-600 text-white flex items-center
-      justify-center rounded-full"
-    >
-      <GiCash size={26} />
-    </div>
-  ),
-  paypal: (
-    <div
-      className="w-12 h-12 bg-blue-600 text-white flex items-center
-      justify-center rounded-full"
-    >
-      <FaPaypal size={26} />
-    </div>
-  ),
+const getIcon = (type) => {
+  switch (type) {
+    case 'crypto':
+      return [FaBtc, 'amber'];
+    case 'visa debit card':
+      return [RiVisaLine, 'blue'];
+    case 'cash':
+      return [GiCash, 'rose'];
+    case 'paypal':
+      return [FaPaypal, 'blue'];
+    default:
+      return [TbBrandCashapp, 'emerald'];
+  }
 };
 
 const AccountCard = ({ account, index, addMoney, transferMoney }) => {
@@ -53,12 +34,25 @@ const AccountCard = ({ account, index, addMoney, transferMoney }) => {
   const { id, account_number, account_name, createdat, account_balance } =
     account;
 
+  const [Icon, color] = getIcon(account_name?.toLowerCase());
+
+  const formatedAccountNumber = formatAccountNumber(
+    isAccountNumberMasked ? maskAccountNumber(account_number) : account_number
+  );
+
   return (
     <div
       key={id + index}
       className="w-full h-39 flex gap-4 bg-gray-50 dark:bg-slate-800 p-3 rounded shadow"
     >
-      <div>{ICONS[account_name?.toLowerCase()]}</div>
+      <div>
+        <div
+          className={`w-12 h-12 bg-${color}-600 text-white flex items-center
+      justify-center rounded-full`}
+        >
+          {<Icon size={26} />}
+        </div>
+      </div>
       <div className="spac-y-2 w-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
@@ -73,13 +67,7 @@ const AccountCard = ({ account, index, addMoney, transferMoney }) => {
           />
         </div>
         <span className="text-gray-600 dark:text-gray-400 font-light leading-loose w-full flex justify-between">
-          <p className="font-mono tracking-widest">
-            {formatAccountNumber(
-              isAccountNumberMasked
-                ? maskAccountNumber(account_number)
-                : account_number
-            )}
-          </p>
+          <p className="font-mono tracking-widest">{formatedAccountNumber}</p>
           <button
             onClick={() => setIsAccountNumberMasked(!isAccountNumberMasked)}
           >
