@@ -50,7 +50,7 @@ const Dashboard = () => {
         </div>
 
         <div className="flex flex-col-reverse md:flex-row gap-0 md:gap-10 2xl:gap-20">
-          <Transactions transaction={lastTransaction} />
+          <Transactions transactions={lastTransaction} />
           <Accounts accounts={lastAccount} />
         </div>
       </div>
