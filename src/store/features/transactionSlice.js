@@ -17,11 +17,31 @@ export const transferFunds = createAsyncThunk(
   }
 );
 
+export const getDashboardInfo = createAsyncThunk(
+  'transaction/dashboardInfo',
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.get('/transaction/dashboardInfo');
+      return response.data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error.message;
+      dispatch(notifyFailure(errorMessage));
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 const initialState = {
   transferFunds: {
     isLoading: false,
     isSuccess: null,
     message: null,
+  },
+  dashboardInfo: {
+    isLoading: false,
+    isSuccess: null,
+    message: null,
+    data: {},
   },
 };
 
@@ -45,6 +65,19 @@ const transactionSlice = createSlice({
         transferFunds.isLoading = false;
         transferFunds.isSuccess = false;
         transferFunds.message = action.payload;
+      })
+      .addCase(getDashboardInfo.pending, ({ dashboardInfo }) => {
+        dashboardInfo.isLoading = true;
+      })
+      .addCase(getDashboardInfo.fulfilled, ({ dashboardInfo }, action) => {
+        dashboardInfo.isLoading = false;
+        dashboardInfo.isSuccess = true;
+        dashboardInfo.data = action.payload;
+      })
+      .addCase(getDashboardInfo.rejected, ({ dashboardInfo }, action) => {
+        dashboardInfo.isLoading = false;
+        dashboardInfo.isSuccess = false;
+        dashboardInfo.message = action.payload;
       }),
 });
 
