@@ -5,7 +5,6 @@ import { TiWarning } from 'react-icons/ti';
 import { formatCurrency, formatDateFullStyle } from '../../../utils/utils';
 
 const Transactions = ({ transactions }) => {
-  console.log(transactions);
   return (
     <div className="py-20 w-full md:w-2/3">
       <Title title="Latest Transactions" />
