@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import Title from '../components/ui/shared/Title';
 import { IoCheckmarkDoneCircle, IoSearchOutline } from 'react-icons/io5';
@@ -8,14 +8,22 @@ import DateRange from '../components/ui/shared/DateRange';
 import { RiProgress3Line } from 'react-icons/ri';
 import { TiWarning } from 'react-icons/ti';
 import { formatCurrency } from '../utils/utils';
+import { getTransactions } from '../store/features/transactionSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import Loading from '../components/ui/shared/Loading';
 
 const Transactions = () => {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  const {
+    isLoading,
+    isSuccess,
+    data: transactionData,
+  } = useSelector(({ transaction }) => transaction.transactions);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
   const [selected, setSelected] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [data, setData] = useState([]);
 
   const [search, setSearch] = useState('');
@@ -33,6 +41,18 @@ const Transactions = () => {
     e.preventDefault();
     setSearchParams({ startDate, endDate, search });
   };
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTransactions());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isSuccess && transactionData) setData(transactionData);
+  }, [transactionData, isSuccess]);
+
+  if (isLoading) return <Loading />;
 
   return (
     <>

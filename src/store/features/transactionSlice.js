@@ -105,7 +105,8 @@ const transactionSlice = createSlice({
       .addCase(getTransactions.fulfilled, ({ transactions }, action) => {
         transactions.isLoading = false;
         transactions.isSuccess = true;
-        transactions.data = action.payload;
+        transactions.message = action.payload.message;
+        transactions.data = action.payload.data;
       })
       .addCase(getTransactions.rejected, ({ transactions }, action) => {
         transactions.isLoading = false;
