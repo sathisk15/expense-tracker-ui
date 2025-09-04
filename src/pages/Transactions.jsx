@@ -13,33 +13,46 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../components/ui/shared/Loading';
 
 const Transactions = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const {
     isLoading,
     isSuccess,
     data: transactionData,
   } = useSelector(({ transaction }) => transaction.transactions);
+  const [data, setData] = useState([]);
+  const [search, setSearch] = useState('');
 
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenView, setIsOpenView] = useState(false);
   const [selected, setSelected] = useState(null);
-  const [data, setData] = useState([]);
-
-  const [search, setSearch] = useState('');
-  const startDate = searchParams.get('startDate') || '';
-  const endDate = searchParams.get('endDate') || '';
 
   const handleViewTransaction = (transaction) => {
     setSelected(transaction);
     setIsOpenView(true);
   };
 
-  const fetchTransactions = () => {};
+  const df = searchParams.get('df') || '';
+  const dt = searchParams.get('dt') || '';
+
+  const filterTransactionByDate = (df, dt, transactionDate) => {
+    return (
+      new Date(transactionDate).getTime() >= new Date(df).getTime() &&
+      new Date(transactionDate).getTime() <= new Date(dt).getTime()
+    );
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setSearchParams({ startDate, endDate, search });
+    setData(
+      transactionData.filter(
+        (transaction) =>
+          transaction.description
+            .toLowerCase()
+            .includes(search.toLowerCase()) &&
+          filterTransactionByDate(df, dt, transaction.updatedat)
+      )
+    );
   };
 
   const dispatch = useDispatch();
@@ -49,8 +62,13 @@ const Transactions = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isSuccess && transactionData) setData(transactionData);
-  }, [transactionData, isSuccess]);
+    if (isSuccess && transactionData)
+      setData(
+        transactionData.filter((transaction) =>
+          filterTransactionByDate(df, dt, transaction.updatedat)
+        )
+      );
+  }, [transactionData, isSuccess, df, dt]);
 
   if (isLoading) return <Loading />;
 
@@ -67,6 +85,7 @@ const Transactions = () => {
                 <input
                   type="text"
                   value={search}
+                  onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search now.."
                   className="outline-none group bg-transparent text-gray-700 dark:text-gray-600 placeholder:text-gray-600"
                 />
