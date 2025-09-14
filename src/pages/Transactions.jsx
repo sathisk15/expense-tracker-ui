@@ -11,6 +11,7 @@ import { formatCurrency } from '../utils/utils';
 import { getTransactions } from '../store/features/transactionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../components/ui/shared/Loading';
+import Pay from '../components/ui/transactions/pay';
 
 const Transactions = () => {
   const [searchParams] = useSearchParams();
@@ -20,7 +21,9 @@ const Transactions = () => {
     isSuccess,
     data: transactionData,
   } = useSelector(({ transaction }) => transaction.transactions);
-  const [data, setData] = useState([]);
+
+  const [transactions, setTransactions] = useState([]);
+
   const [search, setSearch] = useState('');
 
   const [isOpen, setIsOpen] = useState(false);
@@ -36,15 +39,16 @@ const Transactions = () => {
   const dt = searchParams.get('dt') || '';
 
   const filterTransactionByDate = (df, dt, transactionDate) => {
+    const oneDayMs = 24 * 60 * 60 * 1000;
     return (
       new Date(transactionDate).getTime() >= new Date(df).getTime() &&
-      new Date(transactionDate).getTime() <= new Date(dt).getTime()
+      new Date(transactionDate).getTime() <= new Date(dt).getTime() + oneDayMs
     );
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
-    setData(
+    setTransactions(
       transactionData.filter(
         (transaction) =>
           transaction.description
@@ -63,7 +67,7 @@ const Transactions = () => {
 
   useEffect(() => {
     if (isSuccess && transactionData)
-      setData(
+      setTransactions(
         transactionData.filter((transaction) =>
           filterTransactionByDate(df, dt, transaction.updatedat)
         )
@@ -116,7 +120,7 @@ const Transactions = () => {
           </div>
         </div>
         <div className="overflow-x-auto mt-5">
-          {data.length === 0 ? (
+          {transactions.length === 0 ? (
             <div className="w-full flex items-center justify-center py-10 text-gray-600 dark:text-gray-700 text-lg">
               <span>No Transaction History</span>
             </div>
@@ -133,7 +137,7 @@ const Transactions = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {data?.map((transaction, idx) => (
+                  {transactions?.map((transaction, idx) => (
                     <tr
                       key={idx}
                       className="w-full border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-500 hover:bf-gray-300/10 text-sm md:text-base cursor-pointer"
@@ -196,6 +200,7 @@ const Transactions = () => {
           )}
         </div>
       </div>
+      <Pay isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 };
