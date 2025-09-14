@@ -45,6 +45,21 @@ export const getTransactions = createAsyncThunk(
   }
 );
 
+export const addTransaction = createAsyncThunk(
+  'transaction/addTransaction',
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.post('/transaction', data);
+      dispatch(notifySuccess(response.data.message));
+      return response.data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error.message;
+      dispatch(notifyFailure(errorMessage));
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 const initialState = {
   transferFunds: {
     isLoading: false,
@@ -62,6 +77,11 @@ const initialState = {
     isSuccess: null,
     message: null,
     data: [],
+  },
+  addTransaction: {
+    isLoading: false,
+    isSuccess: null,
+    message: null,
   },
 };
 
@@ -112,6 +132,20 @@ const transactionSlice = createSlice({
         transactions.isLoading = false;
         transactions.isSuccess = false;
         transactions.message = action.payload;
+      })
+      .addCase(addTransaction.pending, ({ addTransaction }) => {
+        addTransaction.isLoading = true;
+      })
+      .addCase(addTransaction.fulfilled, ({ addTransaction }, action) => {
+        addTransaction.isLoading = false;
+        addTransaction.isSuccess = true;
+        addTransaction.message = action.payload.message;
+        addTransaction.data.unshift(action.payload.data);
+      })
+      .addCase(addTransaction.rejected, ({ addTransaction }, action) => {
+        addTransaction.isLoading = false;
+        addTransaction.isSuccess = false;
+        addTransaction.message = action.payload;
       }),
 });
 
