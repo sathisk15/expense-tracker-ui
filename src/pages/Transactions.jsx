@@ -11,7 +11,7 @@ import { formatCurrency } from '../utils/utils';
 import { getTransactions } from '../store/features/transactionSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from '../components/ui/shared/Loading';
-import Pay from '../components/ui/transactions/pay';
+import Pay from '../components/ui/transactions/Pay';
 
 const Transactions = () => {
   const [searchParams] = useSearchParams();
@@ -27,13 +27,13 @@ const Transactions = () => {
   const [search, setSearch] = useState('');
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpenView, setIsOpenView] = useState(false);
-  const [selected, setSelected] = useState(null);
+  // const [isOpenView, setIsOpenView] = useState(false);
+  // const [selected, setSelected] = useState(null);
 
-  const handleViewTransaction = (transaction) => {
-    setSelected(transaction);
-    setIsOpenView(true);
-  };
+  // const handleViewTransaction = (transaction) => {
+  //   setSelected(transaction);
+  //   setIsOpenView(true);
+  // };
 
   const df = searchParams.get('df') || '';
   const dt = searchParams.get('dt') || '';

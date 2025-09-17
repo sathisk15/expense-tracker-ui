@@ -6,6 +6,11 @@ import Button from '../shared/Button';
 import { BiLoader } from 'react-icons/bi';
 import { getAccountInfo } from '../../../store/features/accountSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+  addTransaction,
+  getTransactions,
+  resetTransaction,
+} from '../../../store/features/transactionSlice';
 
 const Pay = ({ isOpen, setIsOpen }) => {
   const {
@@ -16,6 +21,9 @@ const Pay = ({ isOpen, setIsOpen }) => {
 
   const { accounts: accountList } = useSelector(
     ({ account }) => account.getAccountInfo
+  );
+  const { isSuccess: isTransactionSuccess } = useSelector(
+    ({ transaction }) => transaction.addTransaction
   );
 
   const [selectedAccount, setSelectedAccount] = useState('');
@@ -28,8 +36,7 @@ const Pay = ({ isOpen, setIsOpen }) => {
   const isLoading = false;
 
   const onSubmit = async (data) => {
-    // dispatch(addAmount({ accountId, amount }));
-    console.log({ ...data, accountId: selectedAccount, source });
+    dispatch(addTransaction({ ...data, accountId: selectedAccount, source }));
   };
 
   useEffect(() => {
@@ -45,6 +52,17 @@ const Pay = ({ isOpen, setIsOpen }) => {
       accounts.find((acc) => acc.id == selectedAccount)?.account_name || ''
     );
   }, [selectedAccount, accounts]);
+
+  useEffect(() => {
+    if (isTransactionSuccess) {
+      setIsOpen(false);
+      setSelectedAccount('');
+      dispatch(getTransactions());
+    }
+    return () => {
+      dispatch(resetTransaction());
+    };
+  }, [isTransactionSuccess, dispatch, setIsOpen]);
 
   return (
     <PopUp

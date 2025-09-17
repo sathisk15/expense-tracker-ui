@@ -49,7 +49,10 @@ export const addTransaction = createAsyncThunk(
   'transaction/addTransaction',
   async (data, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.post('/transaction', data);
+      const response = await api.post(
+        `/transaction/addTransaction?account_id=${data.accountId}`,
+        data
+      );
       dispatch(notifySuccess(response.data.message));
       return response.data;
     } catch (error) {
@@ -140,7 +143,7 @@ const transactionSlice = createSlice({
         addTransaction.isLoading = false;
         addTransaction.isSuccess = true;
         addTransaction.message = action.payload.message;
-        addTransaction.data.unshift(action.payload.data);
+        // addTransaction.data.unshift(action.payload.data);
       })
       .addCase(addTransaction.rejected, ({ addTransaction }, action) => {
         addTransaction.isLoading = false;
