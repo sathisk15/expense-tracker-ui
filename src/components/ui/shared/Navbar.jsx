@@ -1,11 +1,12 @@
 import { RiCurrencyLine } from 'react-icons/ri';
-import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import avatar from '../../../assets/images/avatar.png';
 import ThemeSwitch from './ThemeSwitch';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getUserInfo } from '../../../store/features/userSlice';
+import { IoLogOutOutline } from 'react-icons/io5';
+
 const menu = ['Dashboard', 'Transactions', 'Accounts', 'Settings'];
 
 const Navbar = () => {
@@ -16,6 +17,11 @@ const Navbar = () => {
   useEffect(() => {
     !user && dispatch(getUserInfo());
   }, [user, dispatch]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    window.location.reload();
+  };
 
   return (
     <div className="w-full flex items-center justify-between py-6">
@@ -61,7 +67,10 @@ const Navbar = () => {
             {user?.email}
           </span>
         </div>
-        <MdOutlineKeyboardArrowDown className="hidden md:block text-2xl text-gray-600 dark:text-gray-300 cursor-pointer" />
+        <IoLogOutOutline
+          className="hidden md:block text-2xl text-black dark:text-gray-300 cursor-pointer ml-5"
+          onClick={handleLogout}
+        />
       </div>
     </div>
   );
