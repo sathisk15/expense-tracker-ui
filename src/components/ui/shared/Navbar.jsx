@@ -2,12 +2,20 @@ import { RiCurrencyLine } from 'react-icons/ri';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import avatar from '../../../assets/images/avatar.png';
 import ThemeSwitch from './ThemeSwitch';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getUserInfo } from '../../../store/features/userSlice';
 const menu = ['Dashboard', 'Transactions', 'Accounts', 'Settings'];
 
 const Navbar = () => {
-  const user = useSelector((state) => state.auth.user);
+  const { user } = useSelector(({ user }) => user.getUserInfo);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    !user && dispatch(getUserInfo());
+  }, [user, dispatch]);
 
   return (
     <div className="w-full flex items-center justify-between py-6">
