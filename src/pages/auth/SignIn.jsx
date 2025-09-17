@@ -15,6 +15,7 @@ import {
 } from '../../components/ui/shared/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInUser } from '../../store/features/authSlice';
+import GoogleLoginButton from '../../components/ui/shared/GoogleLoginButton';
 
 const LoginSchema = z.object({
   email: z
@@ -55,6 +56,8 @@ const SignIn = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
+            <GoogleLoginButton />
+            <hr className="mt-6 mb-5" />
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="mb-8 space-y-6">
                 {/* <SocialAuth isLoading={loading} setLoading={setLoading} /> */}
