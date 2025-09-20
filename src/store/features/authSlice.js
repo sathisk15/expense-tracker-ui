@@ -49,6 +49,23 @@ export const signInUser = createAsyncThunk(
   }
 );
 
+export const signInGoogleUser = createAsyncThunk(
+  'auth/signInGoogleUser',
+  async (userCredentials, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.post('/auth/google/signin', userCredentials);
+      localStorage.setItem('token', JSON.stringify(response.data.token));
+      localStorage.setItem('user', JSON.stringify(response.data.user));
+      dispatch(notifySuccess(response.data.message));
+      return response.data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error.message;
+      dispatch(notifyFailure(errorMessage));
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 const initialState = {
   isLoading: false,
   isSuccess: null,
@@ -107,6 +124,20 @@ const authSlice = createSlice({
         state.token = payload.token;
       })
       .addCase(signInUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.message = payload;
+      })
+      .addCase(signInGoogleUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(signInGoogleUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = payload.message;
+        state.token = payload.token;
+      })
+      .addCase(signInGoogleUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.message = payload;
