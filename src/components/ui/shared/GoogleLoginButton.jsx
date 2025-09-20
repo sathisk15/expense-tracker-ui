@@ -1,5 +1,4 @@
 import { GoogleLogin } from '@react-oauth/google';
-import { jwtDecode } from 'jwt-decode';
 
 function GoogleLoginButton({ text = 'signin_with', handleSuccess }) {
   const handleError = () => {

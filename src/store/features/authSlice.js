@@ -17,6 +17,21 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const registerGoogleUser = createAsyncThunk(
+  'auth/registerGoogleUser',
+  async (userDetails, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.post('/auth/google/signup', userDetails);
+      dispatch(notifySuccess(response.data.message));
+      return response.data;
+    } catch (error) {
+      const errorMessage = error?.response?.data?.message || error.message;
+      dispatch(notifyFailure(errorMessage));
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 export const signInUser = createAsyncThunk(
   'auth/signInUser',
   async (userCredentials, { dispatch, rejectWithValue }) => {
@@ -65,6 +80,19 @@ const authSlice = createSlice({
         state.message = payload.message;
       })
       .addCase(registerUser.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.message = payload;
+      })
+      .addCase(registerGoogleUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(registerGoogleUser.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.message = payload.message;
+      })
+      .addCase(registerGoogleUser.rejected, (state, { payload }) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.message = payload;
