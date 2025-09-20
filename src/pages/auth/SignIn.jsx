@@ -14,8 +14,9 @@ import {
   CardTitle,
 } from '../../components/ui/shared/Card';
 import { useDispatch, useSelector } from 'react-redux';
-import { signInUser } from '../../store/features/authSlice';
+import { signInGoogleUser, signInUser } from '../../store/features/authSlice';
 import GoogleLoginButton from '../../components/ui/shared/GoogleLoginButton';
+import { jwtDecode } from 'jwt-decode';
 
 const LoginSchema = z.object({
   email: z
@@ -42,6 +43,16 @@ const SignIn = () => {
   const onSubmit = async (userCredentials) =>
     dispatch(signInUser(userCredentials));
 
+  const googleSignIn = (credentialResponse) => {
+    const credentialResponseDecoded = jwtDecode(credentialResponse.credential);
+    console.log(credentialResponseDecoded);
+    dispatch(
+      signInGoogleUser({
+        email: credentialResponseDecoded?.email,
+      })
+    );
+  };
+
   useEffect(() => {
     if (isSuccess && token) navigate('/dashboard');
   }, [isSuccess, token, navigate]);
@@ -56,7 +67,7 @@ const SignIn = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <GoogleLoginButton />
+            <GoogleLoginButton handleSuccess={googleSignIn} />
             <hr className="mt-6 mb-5" />
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="mb-8 space-y-6">
