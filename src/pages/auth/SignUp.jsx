@@ -15,6 +15,8 @@ import {
 } from '../../components/ui/shared/Card';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, resetAuth } from '../../store/features/authSlice';
+import GoogleLoginButton from '../../components/ui/shared/GoogleLoginButton';
+import { jwtDecode } from 'jwt-decode';
 
 const RegisterSchema = z.object({
   email: z
@@ -43,6 +45,17 @@ const SignUp = () => {
   const onSubmit = async (userFormDetails) =>
     dispatch(registerUser(userFormDetails));
 
+  const googleSignUp = (credentialResponse) => {
+    console.log(credentialResponse);
+    const credentialResponseDecoded = jwtDecode(credentialResponse.credential);
+    console.log('SignUp Success! User Info: ', credentialResponseDecoded);
+
+    // Here you would typically:
+    // 1. Send this token to your backend to verify and create a session.
+    // 2. Store user info in your app's state (e.g., React Context or Redux).
+    // 3. Redirect the user to their dashboard.
+  };
+
   useEffect(() => {
     if (isSuccess) {
       setTimeout(() => navigate('/signin'), 500);
@@ -60,6 +73,11 @@ const SignUp = () => {
             </CardTitle>
           </CardHeader>
           <CardContent className="p-0">
+            <GoogleLoginButton
+              text="signup_with"
+              handleSuccess={googleSignUp}
+            />
+            <hr className="mt-6 mb-5" />
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <div className="mb-8 space-y-6">
                 {/* <SocialAuth isisLoading={isLoading} setisLoading={setisLoading} /> */}
